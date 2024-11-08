@@ -75,7 +75,7 @@ No quadro, alguns detalhes sobre os métodos:
 |--|------------------------------------------------------------|---------------------------------------------------------------------------------------------|
 | TimeDaData | Data, Lista de todos os Times                              | Vai retornar o Time com os integrantes do time daquela data                                 |
 | IntegranteMaisUsado | Data inicial e Data final (podem ser null), Lista de todos os Times | Vai retornar o integrante que tiver presente na maior quantidade de times dentro do período |
-| TimeMaisComum | Data inicial e Data final (podem ser null), Lista de todos os Times | Vai retornar uma lista com os nomes dos integrantes do time mais comum dentro do período    |
+| IntegrantesDoTimeMaisComum | Data inicial e Data final (podem ser null), Lista de todos os Times | Vai retornar uma lista com os nomes dos integrantes do time mais comum dentro do período    |
 | FuncaoMaisComum | Data inicial e Data final (podem ser null), Lista de todos os Times | Vai retornar a função mais comum nos times dentro do período                                |
 | FranquiaMaisFamosa | Data inicial e Data final (podem ser null), Lista de todos os Times | Vai retornar o nome da Franquia mais comum nos times dentro do período                      |
 | ContagemPorFranquia | Data inicial e Data final (podem ser null), Lista de todos os Times | Vai retornar o número (quantidade) de Franquias dentro do período                           |
