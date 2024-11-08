@@ -34,7 +34,7 @@ public class ApiService {
      * Vai retornar uma lista com os nomes dos integrantes do time mais comum
      * dentro do período
      */
-    public List<String> timeMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
+    public List<String> integrantesDoTimeMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
         return null;
     }
