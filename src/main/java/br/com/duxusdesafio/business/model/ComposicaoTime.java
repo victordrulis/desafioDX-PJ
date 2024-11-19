@@ -1,17 +1,17 @@
 package br.com.duxusdesafio.business.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
-import javax.persistence.OneToMany;
-import javax.persistence.ManyToMany;
-
-import java.util.Set;
+import javax.persistence.Id;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ComposicaoTime {
     @Id
     @GeneratedValue

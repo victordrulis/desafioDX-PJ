@@ -1,4 +1,4 @@
-package br.com.duxusdesafio.view.controller;
+package br.com.duxusdesafio.view.composicaotime;
 
 import org.springframework.web.bind.annotation.RestController;
 

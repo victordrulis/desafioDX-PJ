@@ -1,4 +1,4 @@
-package br.com.duxusdesafio.view.dto;
+package br.com.duxusdesafio.view.integrante;
 
 import lombok.Data;
 

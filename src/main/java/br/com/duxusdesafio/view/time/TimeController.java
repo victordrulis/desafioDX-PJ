@@ -1,8 +1,7 @@
-package br.com.duxusdesafio.view.controller;
+package br.com.duxusdesafio.view.time;
 
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class IntegranteController {
-
+public class TimeController {
 }
