@@ -1,7 +1,7 @@
 package br.com.duxusdesafio.service;
 
-import br.com.duxusdesafio.model.Integrante;
-import br.com.duxusdesafio.model.Time;
+import br.com.duxusdesafio.business.model.Integrante;
+import br.com.duxusdesafio.business.model.Time;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * Service que possuirá as regras de negócio para o processamento dos dados solicitados no desafio!
  */
+@Service
 public class ApiService {
 
     /**
