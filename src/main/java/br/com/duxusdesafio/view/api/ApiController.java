@@ -1,43 +1,30 @@
-package br.com.duxusdesafio.service;
+package br.com.duxusdesafio.view.api;
 
-import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.business.model.Time;
-import br.com.duxusdesafio.utils.CollectionUtils;
-import br.com.duxusdesafio.utils.DateUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import br.com.duxusdesafio.service.ApiService;
+import br.com.duxusdesafio.service.time.TimeService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Service que possuirá as regras de negócio para o processamento dos dados solicitados no desafio!
- */
-@Service
-public class ApiService {
+@RestController
+public class ApiController {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(ApiService.class);
+    private final ApiService apiService;
+    private final TimeService timeService;
 
-    /**
-     * Vai retornar um Time, com a composição do time daquela data
-     */
-    public Time timeDaData(LocalDate data, List<Time> todosOsTimes) {
+    public ApiController(ApiService apiService, TimeService timeService) {
+        this.apiService = apiService;
+        this.timeService = timeService;
+    }
 
-        try {
-            DateUtils.validarDataAposDataAtual(data, LocalDate.now());
-            CollectionUtils.validarListaVazia(todosOsTimes);
-        } catch (BusinessException exception) {
-            LOGGER.error("Argumentos inválidos na busca de time na data.", exception);
-            return null;
-        }
-
-        return todosOsTimes.stream()
-                .filter(time -> time.getData().equals(data))
-                .findFirst()
-                .orElse(null);
+    @GetMapping
+    public Time timeDaData(LocalDate data){
+        return apiService.timeDaData(data, timeService.obterTodos());
     }
 
     /**
@@ -90,5 +77,4 @@ public class ApiService {
         // TODO Implementar método seguindo as instruções!
         return null;
     }
-
 }
