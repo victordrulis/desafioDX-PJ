@@ -3,8 +3,7 @@ package br.com.duxusdesafio.view.time;
 import br.com.duxusdesafio.business.model.ComposicaoTime;
 import br.com.duxusdesafio.business.model.Time;
 import br.com.duxusdesafio.view.integrante.IntegranteDto;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -12,7 +11,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class TimeDto {
 

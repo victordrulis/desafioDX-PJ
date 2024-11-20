@@ -5,7 +5,7 @@ import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.business.model.Time;
 import br.com.duxusdesafio.service.ApiService;
 import br.com.duxusdesafio.service.time.TimeService;
-import br.com.duxusdesafio.view.api.service.ApiControllerService;
+import br.com.duxusdesafio.view.time.service.TimeControllerServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +20,12 @@ import java.util.List;
 @RequestMapping("/api")
 public class ApiController {
 
-    private final ApiControllerService apiControllerService;
+    private final TimeControllerServiceImpl timeControllerService;
     private final ApiService apiService;
     private final TimeService timeService;
 
-    public ApiController(ApiControllerService apiControllerService, ApiService apiService, TimeService timeService) {
-        this.apiControllerService = apiControllerService;
+    public ApiController(TimeControllerServiceImpl timeControllerService, ApiService apiService, TimeService timeService) {
+        this.timeControllerService = timeControllerService;
         this.apiService = apiService;
         this.timeService = timeService;
     }
@@ -35,7 +35,7 @@ public class ApiController {
      */
     @GetMapping("/time-da-data/{data}")
     public ResponseEntity<?> timeDaData(@PathVariable LocalDate data) throws BusinessException {
-        return apiControllerService.gerarResponse(apiService.timeDaData(data, timeService.obterTodos()), HttpStatus.ACCEPTED);
+        return timeControllerService.gerarResponse(apiService.timeDaData(data, timeService.obterTodos()), HttpStatus.ACCEPTED);
     }
 
     /**
@@ -45,7 +45,7 @@ public class ApiController {
     @GetMapping("/integrante-mais-usado")
     public ResponseEntity<?> integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
-        return apiControllerService.gerarResponse(new Integrante(), HttpStatus.ACCEPTED);
+        return timeControllerService.gerarResponse(new Integrante(), HttpStatus.ACCEPTED);
     }
 
     /**

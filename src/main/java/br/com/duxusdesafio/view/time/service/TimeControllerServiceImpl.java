@@ -49,7 +49,7 @@ public class TimeControllerServiceImpl extends ApiControllerServiceImpl implemen
 
     @Override
     public ResponseEntity<?> excluir(Long id) {
-        // TODO implementar
+        timeService.excluir(id);
         return super.okVazio();
     }
 }

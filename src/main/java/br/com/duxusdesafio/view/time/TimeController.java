@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.view.time;
 
+import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.view.time.service.TimeControllerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,7 @@ public class TimeController {
     }
 
     @PostMapping("/salvar")
-    public ResponseEntity<?> salvar(@RequestBody TimeDto timeDto) {
+    public ResponseEntity<?> salvar(@RequestBody TimeDto timeDto) throws BusinessException {
         return timeControllerService.salvar(timeDto);
     }
 

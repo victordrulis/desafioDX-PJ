@@ -1,0 +1,52 @@
+# Para testar as URIs, utilizar a extensão do vscode abaixo:
+
+# Name: REST Client
+# Id: humao.rest-client
+# Description: REST Client for Visual Studio Code
+# Version: 0.25.1
+# Publisher: Huachao Mao
+# VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+# ------------------------------------------
+
+###
+GET http://localhost:8080/escalacao/api
+Accept: application/json
+Content-Type:application/json
+###
+GET http://localhost:8080/escalacao/api/time-da-data/21-04-1987
+
+# TIME ----------------
+###
+GET http://localhost:8080/escalacao/api/time/1
+Accept: application/json
+Content-Type:application/json
+###
+GET http://localhost:8080/escalacao/api/time/listar
+Accept: application/json
+Content-Type:application/json
+###
+POST http://localhost:8080/escalacao/api/time/salvar
+Accept: application/json
+Content-Type:application/json
+
+{
+    "descricao": "time salvar",
+    "data": [
+      2024,
+      11,
+      20
+    ],
+    "franquia": null,
+    "composicaoTime": []
+}
+
+
+# FRANQUIA ------------
+###
+http://localhost:8080/escalacao/api/franquia/1
+Accept: application/json
+Content-Type:application/json
+
+
+# INTEGRANTE ----------
