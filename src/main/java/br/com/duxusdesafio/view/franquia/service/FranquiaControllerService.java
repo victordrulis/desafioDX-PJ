@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 public interface FranquiaControllerService {
     ResponseEntity<?> obter(Long id);
-    ResponseEntity<?> listar(LocalDate data);
     ResponseEntity<?> listar();
     ResponseEntity<?> salvar(FranquiaDto franquiaDto);
     ResponseEntity<?> excluir(Long id);

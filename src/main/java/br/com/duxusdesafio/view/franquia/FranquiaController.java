@@ -4,8 +4,6 @@ import br.com.duxusdesafio.view.franquia.service.FranquiaControllerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-
 @RestController
 @RequestMapping("/api/franquia")
 public class FranquiaController {
@@ -21,9 +19,9 @@ public class FranquiaController {
         return franquiaControllerService.obter(id);
     }
 
-    @GetMapping({"/listar", "/listar/{data}"})
-    public ResponseEntity<?> listar(@PathVariable(required = false) LocalDate data) {
-        return franquiaControllerService.listar(data);
+    @GetMapping("/listar")
+    public ResponseEntity<?> listar() {
+        return franquiaControllerService.listar();
     }
 
     @PostMapping("/salvar")

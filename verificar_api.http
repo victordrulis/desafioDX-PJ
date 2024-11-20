@@ -44,9 +44,38 @@ Content-Type:application/json
 
 # FRANQUIA ------------
 ###
-http://localhost:8080/escalacao/api/franquia/1
+GET http://localhost:8080/escalacao/api/franquia/12
+Accept: application/json
+Content-Type:application/json
+###
+GET http://localhost:8080/escalacao/api/franquia/listar
+Accept: application/json
+Content-Type:application/json
+###
+POST http://localhost:8080/escalacao/api/franquia/salvar
 Accept: application/json
 Content-Type:application/json
 
+{
+    "nome": "franquia request"
+}
+
+# FUNCAO ------------
+###
+GET http://localhost:8080/escalacao/api/funcao/14
+Accept: application/json
+Content-Type:application/json
+###
+GET http://localhost:8080/escalacao/api/funcao/listar
+Accept: application/json
+Content-Type:application/json
+###
+POST http://localhost:8080/escalacao/api/funcao/salvar
+Accept: application/json
+Content-Type:application/json
+
+{
+    "nome": "funcao request"
+}
 
 # INTEGRANTE ----------

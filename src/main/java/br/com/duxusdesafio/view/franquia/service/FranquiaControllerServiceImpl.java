@@ -4,10 +4,9 @@ import br.com.duxusdesafio.service.franquia.FranquiaService;
 import br.com.duxusdesafio.view.api.service.ApiControllerServiceImpl;
 import br.com.duxusdesafio.view.franquia.FranquiaDto;
 import br.com.duxusdesafio.view.franquia.validator.FranquiaApiValidatorImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 @Service
 public class FranquiaControllerServiceImpl extends ApiControllerServiceImpl implements FranquiaControllerService {
@@ -22,26 +21,26 @@ public class FranquiaControllerServiceImpl extends ApiControllerServiceImpl impl
 
     @Override
     public ResponseEntity<?> obter(Long id) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<?> listar(LocalDate data) {
-        return super.ok(franquiaService.obterTodos());
+        FranquiaDto franquiaDto = franquiaService.obter(id);
+        return super.gerarResponse(franquiaDto, HttpStatus.ACCEPTED);
     }
 
     @Override
     public ResponseEntity<?> listar() {
-        return null;
+        return super.ok(franquiaService.obterTodos());
     }
 
     @Override
     public ResponseEntity<?> salvar(FranquiaDto franquiaDto) {
-        return null;
+        franquiaApiValidator.validarFormulario(franquiaDto);
+        franquiaService.salvar(franquiaDto);
+
+        return super.ok(null);
     }
 
     @Override
     public ResponseEntity<?> excluir(Long id) {
-        return null;
+        franquiaService.excluir(id);
+        return super.okVazio();
     }
 }
