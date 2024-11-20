@@ -8,14 +8,11 @@ import br.com.duxusdesafio.utils.CollectionUtils;
 import br.com.duxusdesafio.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -38,7 +35,7 @@ public class ApiService {
     public Time timeDaData(LocalDate data, List<Time> todosOsTimes) throws BusinessException {
         apiValidator.validarTimeDaData(data, todosOsTimes);
         return todosOsTimes.stream()
-                .filter(time -> time.getData().equals(Optional.ofNullable(data).orElse(LocalDate.now())))
+                .filter(time -> time.getData().equals(data))
                 .findFirst()
                 .orElse(null);
     }
@@ -107,17 +104,6 @@ public class ApiService {
     public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
         return null;
-    }
-
-    /**
-     * Cria um response com os dados obtidos
-     *
-     * @param dados
-     * @param statusRequest
-     * @return Response para o controller
-     */
-    public ResponseEntity<?> gerarResponse(Object dados, HttpStatus statusRequest) {
-        return new ResponseEntity<>(dados, statusRequest);
     }
 
 }

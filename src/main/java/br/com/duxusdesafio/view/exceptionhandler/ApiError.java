@@ -13,12 +13,16 @@ import java.util.List;
 @AllArgsConstructor
 public class ApiError {
     private final HttpStatus status;
+    private final int satusCode;
+    private final String path;
     private final String message;
     private final List<String> errors;
 
-    public ApiError(HttpStatus status, String message, String error) {
+    public ApiError(HttpStatus status, int satusCode, String path, String message, String error) {
         super();
         this.status = status;
+        this.satusCode = satusCode;
+        this.path = path;
         this.message = message;
         errors = Collections.singletonList(error);
     }

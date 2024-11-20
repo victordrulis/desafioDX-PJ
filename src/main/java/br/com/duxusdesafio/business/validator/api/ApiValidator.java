@@ -7,13 +7,12 @@ import br.com.duxusdesafio.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Component
-public class ApiValidator {
+public class ApiValidator extends BusinessValidator {
     private final Logger LOGGER = LoggerFactory.getLogger(ApiValidator.class);
 
     /**

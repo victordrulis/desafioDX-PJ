@@ -21,4 +21,5 @@ public class Integrante {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "integrante")
     private Set<ComposicaoTime> composicaoTime;
+
 }

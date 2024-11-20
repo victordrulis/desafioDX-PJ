@@ -27,7 +27,7 @@ public class Time {
     @OneToOne
     private Franquia franquia;
 
-    @OneToMany(mappedBy = "time")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "time", cascade = CascadeType.ALL)
     private Set<ComposicaoTime> composicaoTime;
 
 }

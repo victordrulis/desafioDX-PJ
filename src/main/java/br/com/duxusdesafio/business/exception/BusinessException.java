@@ -1,6 +1,6 @@
 package br.com.duxusdesafio.business.exception;
 
-public class BusinessException extends Exception {
+public class BusinessException extends RuntimeException {
 
     public BusinessException() {
         super();

@@ -3,9 +3,9 @@ package br.com.duxusdesafio.view.api;
 import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.business.model.Time;
-import br.com.duxusdesafio.business.validator.api.ApiValidator;
 import br.com.duxusdesafio.service.ApiService;
 import br.com.duxusdesafio.service.time.TimeService;
+import br.com.duxusdesafio.view.api.service.ApiControllerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,16 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 public class ApiController {
 
+    private final ApiControllerService apiControllerService;
     private final ApiService apiService;
     private final TimeService timeService;
 
-    public ApiController(ApiService apiService, TimeService timeService) {
+    public ApiController(ApiControllerService apiControllerService, ApiService apiService, TimeService timeService) {
+        this.apiControllerService = apiControllerService;
         this.apiService = apiService;
         this.timeService = timeService;
     }
@@ -34,8 +35,7 @@ public class ApiController {
      */
     @GetMapping("/time-da-data/{data}")
     public ResponseEntity<?> timeDaData(@PathVariable LocalDate data) throws BusinessException {
-        List<Time> todosOsTimes = timeService.obterTodos();
-        return apiService.gerarResponse(apiService.timeDaData(data, todosOsTimes), HttpStatus.ACCEPTED);
+        return apiControllerService.gerarResponse(apiService.timeDaData(data, timeService.obterTodos()), HttpStatus.ACCEPTED);
     }
 
     /**
@@ -45,7 +45,7 @@ public class ApiController {
     @GetMapping("/integrante-mais-usado")
     public ResponseEntity<?> integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
-        return apiService.gerarResponse(new Integrante(), HttpStatus.ACCEPTED);
+        return apiControllerService.gerarResponse(new Integrante(), HttpStatus.ACCEPTED);
     }
 
     /**
