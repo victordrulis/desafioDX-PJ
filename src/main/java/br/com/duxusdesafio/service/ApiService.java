@@ -3,15 +3,19 @@ package br.com.duxusdesafio.service;
 import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.business.model.Time;
+import br.com.duxusdesafio.business.validator.api.ApiValidator;
 import br.com.duxusdesafio.utils.CollectionUtils;
 import br.com.duxusdesafio.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -22,21 +26,19 @@ public class ApiService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ApiService.class);
 
+    private final ApiValidator apiValidator;
+
+    public ApiService(ApiValidator apiValidator) {
+        this.apiValidator = apiValidator;
+    }
+
     /**
      * Vai retornar um Time, com a composição do time daquela data
      */
-    public Time timeDaData(LocalDate data, List<Time> todosOsTimes) {
-
-        try {
-            DateUtils.validarDataAposDataAtual(data, LocalDate.now());
-            CollectionUtils.validarListaVazia(todosOsTimes);
-        } catch (BusinessException exception) {
-            LOGGER.error("Argumentos inválidos na busca de time na data.", exception);
-            return null;
-        }
-
+    public Time timeDaData(LocalDate data, List<Time> todosOsTimes) throws BusinessException {
+        apiValidator.validarTimeDaData(data, todosOsTimes);
         return todosOsTimes.stream()
-                .filter(time -> time.getData().equals(data))
+                .filter(time -> time.getData().equals(Optional.ofNullable(data).orElse(LocalDate.now())))
                 .findFirst()
                 .orElse(null);
     }
@@ -105,6 +107,17 @@ public class ApiService {
     public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
         return null;
+    }
+
+    /**
+     * Cria um response com os dados obtidos
+     *
+     * @param dados
+     * @param statusRequest
+     * @return Response para o controller
+     */
+    public ResponseEntity<?> gerarResponse(Object dados, HttpStatus statusRequest) {
+        return new ResponseEntity<>(dados, statusRequest);
     }
 
 }

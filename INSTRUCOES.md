@@ -2,6 +2,7 @@
 
 ### Bibliotecas utilizadas
 - Lombok: Evitar _boilerplates_
+- Commons-lang3: Usar metodos comuns para validar objetos
 
 ### Banco de dados
 - Utilizado o MySQL, sendo executado em conteiner Docker (arquivo ./compose.yaml)
@@ -29,7 +30,11 @@
     ```
    $ npm run dev
    ```
-5. No navegor web, acessar a URL:
+5. Acessar as funcionalidades da aplicação a URL:
    ```
-   http://localhost:8080/testeduxus
+   http://localhost:8080/escalacao
+   ```
+6. A API com os endpoints conforme as regras do teste podem ser acessadas na raiz:
+   ```
+   /api
    ```
