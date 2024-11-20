@@ -5,6 +5,8 @@ import br.com.duxusdesafio.business.repository.time.TimeRepository;
 import br.com.duxusdesafio.view.time.TimeDto;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TimeServiceImpl implements TimeService {
 
@@ -22,5 +24,10 @@ public class TimeServiceImpl implements TimeService {
 
         repository.save(time);
 
+    }
+
+    @Override
+    public List<Time> obterTodos() {
+        return null;
     }
 }

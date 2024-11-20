@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -16,8 +17,8 @@ public class Integrante {
     @Column(name = "integrante_id")
     private Long id;
 
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "franquia_id")
-//    private Franquia franquia;
     private String nome;
-//    private Funcao funcao;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "integrante")
+    private Set<ComposicaoTime> composicaoTime;
 }

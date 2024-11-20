@@ -4,9 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -16,5 +15,16 @@ public class ComposicaoTime {
     @Id
     @GeneratedValue
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "id_time")
+    private Time time;
+
+    @ManyToOne
+    @JoinColumn(name = "id_integrante")
+    private Integrante integrante;
+
+    @Column(nullable = false)
+    private LocalDate data;
 
 }

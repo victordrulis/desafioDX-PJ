@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Service que possuirá as regras de negócio para o processamento dos dados solicitados no desafio!
@@ -45,7 +46,22 @@ public class ApiService {
      * dentro do período
      */
     public Integrante integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
+        try {
+            DateUtils.validarDataNaoNula(dataInicial);
+            DateUtils.validarDataNaoNula(dataFinal);
+            CollectionUtils.validarListaVazia(todosOsTimes);
+        } catch (BusinessException exception) {
+            LOGGER.error("Argumentos inválidos na busca de time na data.", exception);
+            return null;
+        }
+
+        List<Time> timesNoPeriodo = todosOsTimes.stream()
+                .filter(time -> time.getData().isAfter(dataInicial))
+                .filter(time -> time.getData().isBefore(dataFinal))
+                .collect(Collectors.toList());
+
+
+
         return null;
     }
 

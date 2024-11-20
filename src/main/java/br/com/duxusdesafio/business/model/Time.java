@@ -5,11 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,4 +23,11 @@ public class Time {
 
     @Column(nullable = false)
     private LocalDate data;
+
+    @OneToOne
+    private Franquia franquia;
+
+    @OneToMany(mappedBy = "time")
+    private Set<ComposicaoTime> composicaoTime;
+
 }
