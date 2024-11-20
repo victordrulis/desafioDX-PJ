@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.view.funcao;
 
+import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.view.funcao.service.FuncaoControllerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +26,12 @@ public class FuncaoController {
     }
 
     @PostMapping("/salvar")
-    public ResponseEntity<?> salvar(@RequestBody FuncaoDto funcaoDto) {
+    public ResponseEntity<?> salvar(@RequestBody FuncaoDto funcaoDto) throws BusinessException {
         return funcaoControllerService.salvar(funcaoDto);
     }
 
     @DeleteMapping("/excluir/{id}")
-    public ResponseEntity<?> excluir(@PathVariable Long id) {
+    public ResponseEntity<?> excluir(@PathVariable Long id) throws BusinessException {
         return funcaoControllerService.excluir(id);
     }
 

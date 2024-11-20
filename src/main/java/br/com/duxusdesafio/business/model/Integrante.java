@@ -6,8 +6,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -19,7 +18,7 @@ public class Integrante {
 
     private String nome;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "integrante")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "integrante", cascade = CascadeType.ALL)
     private Set<ComposicaoTime> composicaoTime;
 
 }

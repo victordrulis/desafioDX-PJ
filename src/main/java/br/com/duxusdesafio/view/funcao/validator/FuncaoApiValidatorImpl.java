@@ -19,9 +19,9 @@ public class FuncaoApiValidatorImpl implements FuncaoApiValidator {
     @Override
     public void validarFormulario(FuncaoDto funcaoDto) throws BusinessException {
         if (isNull(funcaoDto)) {
-            throw new BusinessException("O formulário de funcao está vazio.");
+            throw new BusinessException("O formulário de função está vazio.");
         } else if (isEmpty(funcaoDto.getNome())) {
-            throw new BusinessException("O funcao não possui nome.");
+            throw new BusinessException("A função não possui nome.");
         }
     }
 }

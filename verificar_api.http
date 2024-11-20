@@ -79,3 +79,19 @@ Content-Type:application/json
 }
 
 # INTEGRANTE ----------
+###
+GET http://localhost:8080/escalacao/api/integrante/14
+Accept: application/json
+Content-Type:application/json
+###
+GET http://localhost:8080/escalacao/api/integrante/listar
+Accept: application/json
+Content-Type:application/json
+###
+POST http://localhost:8080/escalacao/api/integrante/salvar
+Accept: application/json
+Content-Type:application/json
+
+{
+    "nome": "integrante request"
+}

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 public class IntegranteDto {
+    private Long id;
     private String nome;
     private List<ComposicaoTimeDto> composicaoTime;
 

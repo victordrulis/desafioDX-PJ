@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.view.franquia;
 
+import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.view.franquia.service.FranquiaControllerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +26,12 @@ public class FranquiaController {
     }
 
     @PostMapping("/salvar")
-    public ResponseEntity<?> salvar(@RequestBody FranquiaDto franquiaDto) {
+    public ResponseEntity<?> salvar(@RequestBody FranquiaDto franquiaDto) throws BusinessException {
         return franquiaControllerService.salvar(franquiaDto);
     }
 
     @DeleteMapping("/excluir/{id}")
-    public ResponseEntity<?> excluir(@PathVariable Long id) {
+    public ResponseEntity<?> excluir(@PathVariable Long id) throws BusinessException {
         return franquiaControllerService.excluir(id);
     }
 

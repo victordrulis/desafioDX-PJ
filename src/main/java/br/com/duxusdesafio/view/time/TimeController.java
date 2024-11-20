@@ -39,7 +39,7 @@ public class TimeController {
     }
 
     @DeleteMapping("/excluir/{id}")
-    public ResponseEntity<?> excluir(@PathVariable Long id) {
+    public ResponseEntity<?> excluir(@PathVariable Long id) throws BusinessException {
         return timeControllerService.excluir(id);
     }
 }
