@@ -9,6 +9,7 @@ import br.com.duxusdesafio.business.validator.integrante.IntegranteValidatorImpl
 import br.com.duxusdesafio.utils.DateUtils;
 import br.com.duxusdesafio.view.integrante.IntegranteDto;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -106,17 +107,15 @@ public class IntegranteServiceImpl implements IntegranteService {
      * Encontra na lista de times a composicao de integrantes mais comum.
      * Extrair as listas de integrantes dos times e contar quantas vezes cada lista de integrantes se repete
      */
-    private Optional<Set<Integrante>> getComposicaoTimeMaisComum(List<Time> times, LocalDate dataInicial, LocalDate dataFinal) {
+    Optional<Set<Integrante>> getComposicaoTimeMaisComum(List<Time> times, LocalDate dataInicial, LocalDate dataFinal) {
         Map<Set<Integrante>, Long> composicoesRepetidas = times.stream()
                 .filter(predicatePeriodoTime(dataInicial, dataFinal))
-                .flatMap(time -> time.getComposicaoTimes().stream())
-                .map(ComposicaoTime::getIntegrante)
-                .map(integrante -> {
-                    // Cria um Set com o integrante, garantindo que ele seja único e ordenado
-                    Set<Integrante> integrantesOrdenados = new TreeSet<>(Comparator.comparingLong(Integrante::getId));
-                    integrantesOrdenados.add(integrante);
-                    return integrantesOrdenados;
-                })
+                .map(Time::getComposicaoTimes)
+                .map(composicaoTimeSet ->
+                        composicaoTimeSet.stream()
+                                .map(ComposicaoTime::getIntegrante)
+                                .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparingLong(Integrante::getId))))
+                )
                 .collect(Collectors.groupingBy(
                         Function.identity(),
                         Collectors.counting()
