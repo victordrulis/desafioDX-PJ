@@ -7,6 +7,7 @@ import br.com.duxusdesafio.service.ApiService;
 import br.com.duxusdesafio.service.integrante.IntegranteServiceImpl;
 import br.com.duxusdesafio.service.time.TimeService;
 import br.com.duxusdesafio.view.api.service.ApiControllerServiceImpl;
+import br.com.duxusdesafio.view.franquia.FranquiaDto;
 import br.com.duxusdesafio.view.funcao.FuncaoDto;
 import br.com.duxusdesafio.view.integrante.IntegranteDto;
 import br.com.duxusdesafio.view.time.TimeDto;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -73,7 +75,7 @@ public class ApiController {
      * Vai retornar a função mais comum nos times dentro do período
      */
     @GetMapping("/funcao-mais-comum")
-    public ResponseEntity<?> funcaoMaisComum(@RequestParam(required = false) LocalDate dataInicial, @RequestParam(required = false) LocalDate dataFinal){
+    public ResponseEntity<?> funcaoMaisComum(@RequestParam(required = false) LocalDate dataInicial, @RequestParam(required = false) LocalDate dataFinal) {
         List<Time> timesNoPeriodo = timeService.obterTodosNoPeriodo(dataInicial, dataFinal);
         String funcaoEmTimesMaisComumNoPeriodo = apiService.funcaoMaisComum(dataInicial, dataFinal, timesNoPeriodo);
         FuncaoDto funcao = FuncaoDto.builder().nome(funcaoEmTimesMaisComumNoPeriodo).build();
@@ -86,26 +88,32 @@ public class ApiController {
      */
     @GetMapping("/franquia-mais-famosa")
     public ResponseEntity<?> franquiaMaisFamosa(@RequestParam(required = false) LocalDate dataInicial, @RequestParam(required = false) LocalDate dataFinal) {
-        // TODO Implementar método seguindo as instruções!
-        return null;
-    }
+        List<Time> timesNoPeriodo = timeService.obterTodosNoPeriodo(dataInicial, dataFinal);
+        String franquiaMaisFamosaNoPeriodo = apiService.franquiaMaisFamosa(dataInicial, dataFinal, timesNoPeriodo);
+        FranquiaDto franquia = FranquiaDto.builder().nome(franquiaMaisFamosaNoPeriodo).build();
 
+        return apiControllerService.gerarResponse(franquia, HttpStatus.OK);
+    }
 
     /**
      * Vai retornar o número (quantidade) de Franquias dentro do período
      */
     @GetMapping("/contagem-por-franquia")
-    public ResponseEntity<?> contagemPorFranquia(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return null;
+    public ResponseEntity<?> contagemPorFranquia(LocalDate dataInicial, LocalDate dataFinal) {
+        List<Time> timesNoPeriodo = timeService.obterTodosNoPeriodo(dataInicial, dataFinal);
+        Map<String, Long> contagemPorFranquia = apiService.contagemPorFranquia(dataInicial, dataFinal, timesNoPeriodo);
+
+        return apiControllerService.gerarResponse(contagemPorFranquia, HttpStatus.OK);
     }
 
     /**
      * Vai retornar o número (quantidade) de Funções dentro do período
      */
     @GetMapping("/contagem-por-funcao")
-    public ResponseEntity<?> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return null;
+    public ResponseEntity<?> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal) {
+        List<Time> timesNoPeriodo = timeService.obterTodosNoPeriodo(dataInicial, dataFinal);
+        Map<String, Long> contagemPorFuncao = apiService.contagemPorFuncao(dataInicial, dataFinal, timesNoPeriodo);
+
+        return apiControllerService.gerarResponse(contagemPorFuncao, HttpStatus.OK);
     }
 }

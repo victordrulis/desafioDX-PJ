@@ -5,6 +5,7 @@ import br.com.duxusdesafio.business.exception.TecException;
 import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.business.model.Time;
 import br.com.duxusdesafio.business.validator.api.ApiValidator;
+import br.com.duxusdesafio.service.franquia.FranquiaServiceImpl;
 import br.com.duxusdesafio.service.funcao.FuncaoServiceImpl;
 import br.com.duxusdesafio.service.integrante.IntegranteServiceImpl;
 import br.com.duxusdesafio.utils.CollectionUtils;
@@ -30,11 +31,13 @@ public class ApiService {
     private final ApiValidator apiValidator;
     private final IntegranteServiceImpl integranteService;
     private final FuncaoServiceImpl funcaoService;
+    private final FranquiaServiceImpl franquiaService;
 
-    public ApiService(ApiValidator apiValidator, IntegranteServiceImpl integranteService, FuncaoServiceImpl funcaoService) {
+    public ApiService(ApiValidator apiValidator, IntegranteServiceImpl integranteService, FuncaoServiceImpl funcaoService, FranquiaServiceImpl franquiaService) {
         this.apiValidator = apiValidator;
         this.integranteService = integranteService;
         this.funcaoService = funcaoService;
+        this.franquiaService = franquiaService;
     }
 
     /**
@@ -101,8 +104,16 @@ public class ApiService {
      * Vai retornar o nome da Franquia mais comum nos times dentro do período
      */
     public String franquiaMaisFamosa(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
-        // TODO Implementar método seguindo as instruções!
-        throw new TecException("Função ainda não implementada");
+        try {
+            DateUtils.validarDataNaoNula(dataInicial);
+            DateUtils.validarDataInicialAposDataFinal(dataInicial, dataFinal);
+            CollectionUtils.validarListaVazia(todosOsTimes);
+        } catch (BusinessException exception) {
+            LOGGER.error(ARGUMENTOS_INVALIDOS_NA_BUSCA_DE_INTEGRANTE_MAIS_USADO_NO_PERIODO, exception);
+            return null;
+        }
+
+        return franquiaService.obterFranquiaMaisFamosa(todosOsTimes, dataInicial, dataFinal);
     }
 
 

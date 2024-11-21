@@ -1,10 +1,7 @@
 package br.com.duxusdesafio.service;
 
 import br.com.duxusdesafio.business.exception.BusinessException;
-import br.com.duxusdesafio.business.model.ComposicaoTime;
-import br.com.duxusdesafio.business.model.Funcao;
-import br.com.duxusdesafio.business.model.Integrante;
-import br.com.duxusdesafio.business.model.Time;
+import br.com.duxusdesafio.business.model.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.junit.Assert;
@@ -158,6 +155,19 @@ public class ApiServiceTest {
 
     @Test
     public void franquiaMaisFamosa() {
+        Times dadosOsTimes = getTimes();
+        Integrantes dadosOsIntegrantes = getIntegrantes();
+        ComposicoesTime dadasAsComposicoes = getComposicoesTime(dadosOsTimes, dadosOsIntegrantes);
+
+        dadosOsTimes.time1.setComposicaoTimes(Sets.newHashSet(dadasAsComposicoes.composicaoTime1, dadasAsComposicoes.composicaoTime3));
+        dadosOsTimes.time2.setComposicaoTimes(Sets.newHashSet(dadasAsComposicoes.composicaoTime2));
+
+        List<Time> todosOsTimes = Arrays.asList(dadosOsTimes.time1, dadosOsTimes.time2, dadosOsTimes.time3);
+
+        String franquiaMaisFamosa = apiService.franquiaMaisFamosa(dataInicial, dataFinal, todosOsTimes);
+
+        assertNotNull(franquiaMaisFamosa);
+        assertEquals("Frank Aguiar", franquiaMaisFamosa);
     }
 
     @Test
@@ -192,8 +202,10 @@ public class ApiServiceTest {
         Funcao funcao1 = Funcao.builder().id(1L).nome("Off-lane").build();
         Funcao funcao2 = Funcao.builder().id(2L).nome("HC").build();
 
-        Integrante integrante1 = Integrante.builder().id(1L).nome("integrante 1").funcao(funcao1).build();
-        Integrante integrante2 = Integrante.builder().id(2L).nome("integrante 2").funcao(funcao2).build();
+        Franquia franquia1 = Franquia.builder().id(1L).nome("Frank Aguiar").build();
+
+        Integrante integrante1 = Integrante.builder().id(1L).nome("integrante 1").funcao(funcao1).franquia(franquia1).build();
+        Integrante integrante2 = Integrante.builder().id(2L).nome("integrante 2").funcao(funcao2).franquia(franquia1).build();
 
         return new Integrantes(integrante1, integrante2);
     }
