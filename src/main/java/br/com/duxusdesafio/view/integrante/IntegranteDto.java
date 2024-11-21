@@ -19,7 +19,7 @@ public class IntegranteDto implements Serializable {
     private FranquiaDto franquia;
     private FuncaoDto funcao;
     @Singular
-    private List<TimeDoIntegranteDto> times;
+    private List<IntegranteTimeDto> times;
 
     public static IntegranteDto from(Integrante integrante) {
         IntegranteDtoBuilder builder = builder()
@@ -30,7 +30,7 @@ public class IntegranteDto implements Serializable {
 
         integrante.getComposicaoTimes().stream()
                 .filter(Objects::nonNull)
-                .forEach(composicaoTime -> builder.time(TimeDoIntegranteDto.from(composicaoTime.getTime())));
+                .forEach(composicaoTime -> builder.time(IntegranteTimeDto.from(composicaoTime.getTime())));
 
         return builder.build();
     }

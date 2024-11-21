@@ -6,11 +6,11 @@ import lombok.Data;
 
 @Data
 @Builder
-public class TimeDoIntegranteDto {
+public class IntegranteTimeDto {
     private Long time_id;
     private String time;
 
-    public static TimeDoIntegranteDto from(Time time) {
+    public static IntegranteTimeDto from(Time time) {
         return builder()
                 .time_id(time.getId())
                 .time(time.getDescricao())

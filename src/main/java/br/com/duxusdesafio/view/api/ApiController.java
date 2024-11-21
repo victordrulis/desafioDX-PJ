@@ -11,10 +11,7 @@ import br.com.duxusdesafio.view.integrante.IntegranteDto;
 import br.com.duxusdesafio.view.time.TimeDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -39,8 +36,8 @@ public class ApiController {
     /**
      * Vai retornar um Time, com a composição do time daquela data
      */
-    @GetMapping("/time-da-data/{data}")
-    public ResponseEntity<?> timeDaData(@PathVariable LocalDate data) throws BusinessException {
+    @GetMapping("/time-da-data")
+    public ResponseEntity<?> timeDaData(@RequestParam(required = false)  LocalDate data) throws BusinessException {
         TimeDto timeDto = Optional.ofNullable(apiService.timeDaData(data, timeService.obterTodos()))
                 .map(TimeDto::from)
                 .orElseGet(TimeDto::new);
@@ -52,8 +49,8 @@ public class ApiController {
      * Vai retornar o integrante que estiver presente na maior quantidade de times
      * dentro do período
      */
-    @GetMapping("/integrante-mais-usado/{dataInicial}/{dataFinal}")
-    public ResponseEntity<?> integranteMaisUsado(@PathVariable LocalDate dataInicial, @PathVariable LocalDate dataFinal) {
+    @GetMapping("/integrante-mais-usado")
+    public ResponseEntity<?> integranteMaisUsado(@RequestParam(required = false) LocalDate dataInicial, @RequestParam(required = false) LocalDate dataFinal) {
         List<Time> timesNoPeriodo = timeService.obterTodosNoPeriodo(dataInicial, dataFinal);
         IntegranteDto integranteMaisUsado = IntegranteDto.from(Optional.ofNullable(apiService.integranteMaisUsado(dataInicial, dataFinal, timesNoPeriodo))
                 .orElseGet(Integrante::new));
@@ -65,7 +62,7 @@ public class ApiController {
      * dentro do período
      */
     @GetMapping("/integrante-do-time-mais-comum")
-    public ResponseEntity<?> integrantesDoTimeMaisComum(LocalDate dataInicial, LocalDate dataFinal) {
+    public ResponseEntity<?> integrantesDoTimeMaisComum(@RequestParam(required = false) LocalDate dataInicial, @RequestParam(required = false) LocalDate dataFinal) {
         List<Time> timesNoPeriodo = timeService.obterTodosNoPeriodo(dataInicial, dataFinal);
         List<String> integrantesDoTimeMaisComum = apiService.integrantesDoTimeMaisComum(dataInicial, dataFinal, timesNoPeriodo);
         return apiControllerService.gerarResponse(integrantesDoTimeMaisComum, HttpStatus.OK);
@@ -75,7 +72,7 @@ public class ApiController {
      * Vai retornar a função mais comum nos times dentro do período
      */
     @GetMapping("/funcao-mais-comum")
-    public ResponseEntity<?> funcaoMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
+    public ResponseEntity<?> funcaoMaisComum(@RequestParam(required = false) LocalDate dataInicial, @RequestParam(required = false) LocalDate dataFinal){
         // TODO Implementar método seguindo as instruções!
         return null;
     }
@@ -84,7 +81,7 @@ public class ApiController {
      * Vai retornar o nome da Franquia mais comum nos times dentro do período
      */
     @GetMapping("/franquia-mais-famosa")
-    public ResponseEntity<?> franquiaMaisFamosa(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
+    public ResponseEntity<?> franquiaMaisFamosa(@RequestParam(required = false) LocalDate dataInicial, @RequestParam(required = false) LocalDate dataFinal) {
         // TODO Implementar método seguindo as instruções!
         return null;
     }
