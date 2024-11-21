@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Service que possuirá as regras de negócio para o processamento dos dados solicitados no desafio!
@@ -116,21 +117,48 @@ public class ApiService {
         return franquiaService.obterFranquiaMaisFamosa(todosOsTimes, dataInicial, dataFinal);
     }
 
-
     /**
      * Vai retornar o número (quantidade) de Franquias dentro do período
      */
     public Map<String, Long> contagemPorFranquia(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        throw new TecException("Função ainda não implementada");
+        try {
+            DateUtils.validarDataNaoNula(dataInicial);
+            DateUtils.validarDataInicialAposDataFinal(dataInicial, dataFinal);
+            CollectionUtils.validarListaVazia(todosOsTimes);
+        } catch (BusinessException exception) {
+            LOGGER.error(ARGUMENTOS_INVALIDOS_NA_BUSCA_DE_INTEGRANTE_MAIS_USADO_NO_PERIODO, exception);
+            return null;
+        }
+
+        return franquiaService.getContagemPorFranquia(todosOsTimes, dataInicial, dataFinal).entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        entry -> entry.getKey().getNome(),
+                        Map.Entry::getValue,
+                        Long::sum
+                ));
     }
 
     /**
      * Vai retornar o número (quantidade) de Funções dentro do período
      */
     public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        throw new TecException("Função ainda não implementada");
+        try {
+            DateUtils.validarDataNaoNula(dataInicial);
+            DateUtils.validarDataInicialAposDataFinal(dataInicial, dataFinal);
+            CollectionUtils.validarListaVazia(todosOsTimes);
+        } catch (BusinessException exception) {
+            LOGGER.error(ARGUMENTOS_INVALIDOS_NA_BUSCA_DE_INTEGRANTE_MAIS_USADO_NO_PERIODO, exception);
+            return null;
+        }
+
+        return funcaoService.obterContagemDeFuncaoUtilizadasNoPeriodo(todosOsTimes, dataInicial, dataFinal).entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        entry -> entry.getKey().getNome(),
+                        Map.Entry::getValue,
+                        Long::sum
+                ));
     }
 
 }

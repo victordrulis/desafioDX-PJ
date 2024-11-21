@@ -15,10 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -103,7 +100,7 @@ public class ApiServiceTest {
 
         Optional<List<String>> resultado = Optional.ofNullable(apiService.integrantesDoTimeMaisComum(dataInicial, dataFinal, times));
 
-        verificarAComposicaoDeTimesMaisComum(resultado);
+        verificarAComposicaoDeTimesMaisComum(resultado, 2);
     }
 
     @Test
@@ -133,7 +130,7 @@ public class ApiServiceTest {
         // Chamada ao método
         Optional<List<String>> resultado = Optional.ofNullable(apiService.integrantesDoTimeMaisComum(dataInicial, dataFinal, times));
 
-        verificarAComposicaoDeTimesMaisComum(resultado);
+        verificarAComposicaoDeTimesMaisComum(resultado, 2);
     }
 
     @Test
@@ -172,10 +169,38 @@ public class ApiServiceTest {
 
     @Test
     public void contagemPorFranquia() {
+        Times dadosOsTimes = getTimes();
+        Integrantes dadosOsIntegrantes = getIntegrantes();
+        ComposicoesTime dadasAsComposicoes = getComposicoesTime(dadosOsTimes, dadosOsIntegrantes);
+
+        dadosOsTimes.time1.setComposicaoTimes(Sets.newHashSet(dadasAsComposicoes.composicaoTime1, dadasAsComposicoes.composicaoTime3));
+        dadosOsTimes.time2.setComposicaoTimes(Sets.newHashSet(dadasAsComposicoes.composicaoTime2));
+
+        List<Time> todosOsTimes = Arrays.asList(dadosOsTimes.time1, dadosOsTimes.time2, dadosOsTimes.time3);
+
+        Map<String, Long> contagemPorFranquia = apiService.contagemPorFranquia(dataInicial, dataFinal, todosOsTimes);
+
+        assertNotNull(contagemPorFranquia);
+        assertTrue(contagemPorFranquia.containsKey("Frank Aguiar"));
+        assertEquals(2L, contagemPorFranquia.get("Frank Aguiar").longValue());
     }
 
     @Test
     public void contagemPorFuncao() {
+        Times dadosOsTimes = getTimes();
+        Integrantes dadosOsIntegrantes = getIntegrantes();
+        ComposicoesTime dadasAsComposicoes = getComposicoesTime(dadosOsTimes, dadosOsIntegrantes);
+
+        dadosOsTimes.time1.setComposicaoTimes(Sets.newHashSet(dadasAsComposicoes.composicaoTime1, dadasAsComposicoes.composicaoTime3));
+        dadosOsTimes.time2.setComposicaoTimes(Sets.newHashSet(dadasAsComposicoes.composicaoTime2));
+
+        List<Time> todosOsTimes = Arrays.asList(dadosOsTimes.time1, dadosOsTimes.time2, dadosOsTimes.time3);
+
+        Map<String, Long> contagemPorFuncao = apiService.contagemPorFuncao(dataInicial, dataFinal, todosOsTimes);
+
+        assertNotNull(contagemPorFuncao);
+        assertTrue(contagemPorFuncao.containsKey("Off-lane"));
+        assertEquals(2L, contagemPorFuncao.get("Off-lane").longValue());
     }
 
     private ComposicoesTime getComposicoesTime(Times dadosOsTimes, Integrantes dadosOsIntegrantes) {
@@ -288,9 +313,9 @@ public class ApiServiceTest {
         }
     }
 
-    private void verificarAComposicaoDeTimesMaisComum(Optional<List<String>> resultado) {
+    private void verificarAComposicaoDeTimesMaisComum(Optional<List<String>> resultado, int qtd) {
         assertTrue(resultado.isPresent());
-        assertEquals(2, resultado.get().size());
+        assertEquals(qtd, resultado.get().size());
         assertTrue(resultado.get().contains("Faker"));
         assertTrue(resultado.get().contains("Fallen"));
     }

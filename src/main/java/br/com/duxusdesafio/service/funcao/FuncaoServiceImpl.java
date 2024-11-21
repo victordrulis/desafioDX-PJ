@@ -70,17 +70,22 @@ public class FuncaoServiceImpl implements FuncaoService {
     }
 
     private Optional<Funcao> obterFuncaoComMaiorOcorrenciaNoPeriodo(List<Time> todosOsTimes, LocalDate dataInicial, LocalDate dataFinal) {
-        Map<Funcao, Long> funcaoOcorrenciasEmTimes = TimeServiceImpl.getTimeNoPeriodo(todosOsTimes, dataInicial, dataFinal)
+        Map<Funcao, Long> funcaoOcorrenciasEmTimes = obterContagemDeFuncaoUtilizadasNoPeriodo(todosOsTimes, dataInicial, dataFinal);
+
+        return funcaoOcorrenciasEmTimes.entrySet().stream()
+                .max(Map.Entry.comparingByValue()) // Encontra a funcao com o maior número de repetições
+                .map(Map.Entry::getKey);
+    }
+
+    public Map<Funcao, Long> obterContagemDeFuncaoUtilizadasNoPeriodo(List<Time> todosOsTimes, LocalDate dataInicial, LocalDate dataFinal) {
+        return TimeServiceImpl.getTimeNoPeriodo(todosOsTimes, dataInicial, dataFinal)
                 .flatMap(time -> time.getComposicaoTimes().stream())
                 .filter(Objects::nonNull)
                 .map(ComposicaoTime::getIntegrante)
                 .filter(Objects::nonNull)
                 .map(Integrante::getFuncao)
                 .filter(Objects::nonNull)
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())); // Conta quantas vezes cada função aparece
-
-        return funcaoOcorrenciasEmTimes.entrySet().stream()
-                .max(Map.Entry.comparingByValue()) // Encontra a funcao com o maior número de repetições
-                .map(Map.Entry::getKey);
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
+
 }

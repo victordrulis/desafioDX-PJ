@@ -70,17 +70,21 @@ public class FranquiaServiceImpl implements FranquiaService {
     }
 
     private Optional<Franquia> obterFranquiaComMaiorOcorrenciaNoPeriodo(List<Time> todosOsTimes, LocalDate dataInicial, LocalDate dataFinal) {
-        Map<Franquia, Long> funcaoOcorrenciasEmTimes = TimeServiceImpl.getTimeNoPeriodo(todosOsTimes, dataInicial, dataFinal)
+        Map<Franquia, Long> funcaoOcorrenciasEmTimes = getContagemPorFranquia(todosOsTimes, dataInicial, dataFinal);
+
+        return funcaoOcorrenciasEmTimes.entrySet().stream()
+                .max(Map.Entry.comparingByValue()) // Encontra a franquia com o maior número de repetições
+                .map(Map.Entry::getKey);
+    }
+
+    public Map<Franquia, Long> getContagemPorFranquia(List<Time> todosOsTimes, LocalDate dataInicial, LocalDate dataFinal) {
+        return TimeServiceImpl.getTimeNoPeriodo(todosOsTimes, dataInicial, dataFinal)
                 .flatMap(time -> time.getComposicaoTimes().stream())
                 .filter(Objects::nonNull)
                 .map(ComposicaoTime::getIntegrante)
                 .filter(Objects::nonNull)
                 .map(Integrante::getFranquia)
                 .filter(Objects::nonNull)
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting())); // Conta quantas vezes cada função aparece
-
-        return funcaoOcorrenciasEmTimes.entrySet().stream()
-                .max(Map.Entry.comparingByValue()) // Encontra a franquia com o maior número de repetições
-                .map(Map.Entry::getKey);
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 }
