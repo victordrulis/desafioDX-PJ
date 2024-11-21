@@ -9,7 +9,6 @@ import br.com.duxusdesafio.business.validator.integrante.IntegranteValidatorImpl
 import br.com.duxusdesafio.utils.DateUtils;
 import br.com.duxusdesafio.view.integrante.IntegranteDto;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

@@ -86,6 +86,77 @@ public class ApiServiceTest {
         Assert.assertEquals(dadosOsIntegrantes.integrante1, integranteMaisUsado);
     }
 
+    @Test
+    public void integranteMaisUsadoNaoLancaErrosComListaDeTimesVazia() {
+        assertDoesNotThrow(() -> {
+            apiService.integranteMaisUsado(DATA_NOVEMBRO_2022, DATA_HOJE, Lists.newArrayList());
+        });
+    }
+
+    @Test
+    public void integrantesDoTimeMaisComumNoPeriodo() {
+        LocalDate dataInicial = LocalDate.of(2024, 1, 1);
+        LocalDate dataFinal = LocalDate.of(2024, 12, 31);
+
+        Composioes dadasAsComposicoes = getComposioes();
+        TimesSemArgumentos dadosOsTimes = getTimes(dadasAsComposicoes);
+
+        List<Time> times = Arrays.asList(dadosOsTimes.time1, dadosOsTimes.time2, dadosOsTimes.time3);
+
+        Optional<List<String>> resultado = Optional.ofNullable(apiService.integrantesDoTimeMaisComum(dataInicial, dataFinal, times));
+
+        verificarAComposicaoDeTimesMaisComum(resultado);
+    }
+
+    @Test
+    public void integrantesDoTimeMaisComumNoPeriodoEmpatado() {
+        // Criação de dados de exemplo
+        Time time1 = mock(Time.class);
+        Time time2 = mock(Time.class);
+        Time time3 = mock(Time.class);
+
+        LocalDate dataInicial = LocalDate.of(2024, 1, 1);
+        LocalDate dataFinal = LocalDate.of(2024, 12, 31);
+
+        // Mock do comportamento de composicaoTimes
+        ComposicaoTime composicaoTime1 = criarComposicao(1L, "Faker");
+        ComposicaoTime composicaoTime2 = criarComposicao(2L, "Fallen");
+        ComposicaoTime composicaoTime3 = criarComposicao(3L, "Victor");
+
+        when(time1.getComposicaoTimes()).thenReturn(Sets.newHashSet(composicaoTime1, composicaoTime2));
+        when(time2.getComposicaoTimes()).thenReturn(Sets.newHashSet(composicaoTime3, composicaoTime1));
+        when(time3.getComposicaoTimes()).thenReturn(Sets.newHashSet(composicaoTime1));
+
+        // Mock do método getNome do integrante
+        when(time1.getData()).thenReturn(LocalDate.of(2024, 6, 1));
+        when(time2.getData()).thenReturn(LocalDate.of(2024, 6, 1));
+        when(time3.getData()).thenReturn(LocalDate.of(2024, 6, 1));
+
+        // Lista de times
+        List<Time> times = Arrays.asList(time1, time2, time3);
+
+        // Chamada ao método
+        Optional<List<String>> resultado = Optional.ofNullable(apiService.integrantesDoTimeMaisComum(dataInicial, dataFinal, times));
+
+        verificarAComposicaoDeTimesMaisComum(resultado);
+    }
+
+    @Test
+    public void funcaoMaisComum() {
+    }
+
+    @Test
+    public void franquiaMaisFamosa() {
+    }
+
+    @Test
+    public void contagemPorFranquia() {
+    }
+
+    @Test
+    public void contagemPorFuncao() {
+    }
+
     private ComposicoesTime getComposicoesTime(Times dadosOsTimes, Integrantes dadosOsIntegrantes) {
         ComposicaoTime composicaoTime1 = ComposicaoTime.builder().time(dadosOsTimes.time1).integrante(dadosOsIntegrantes.integrante1).build();
         ComposicaoTime composicaoTime2 = ComposicaoTime.builder().time(dadosOsTimes.time2).integrante(dadosOsIntegrantes.integrante2).build();
@@ -143,28 +214,6 @@ public class ApiServiceTest {
         }
     }
 
-    @Test
-    public void integranteMaisUsadoNaoLancaErrosComListaDeTimesVazia() {
-        assertDoesNotThrow(() -> {
-            apiService.integranteMaisUsado(DATA_NOVEMBRO_2022, DATA_HOJE, Lists.newArrayList());
-        });
-    }
-
-    @Test
-    public void integrantesDoTimeMaisComumNoPeriodo() {
-        LocalDate dataInicial = LocalDate.of(2024, 1, 1);
-        LocalDate dataFinal = LocalDate.of(2024, 12, 31);
-
-        Composioes dadasAsComposicoes = getComposioes();
-        TimesSemArgumentos dadosOsTimes = getTimes(dadasAsComposicoes);
-
-        List<Time> times = Arrays.asList(dadosOsTimes.time1, dadosOsTimes.time2, dadosOsTimes.time3);
-
-        Optional<List<String>> resultado = Optional.ofNullable(apiService.integrantesDoTimeMaisComum(dataInicial, dataFinal, times));
-
-        verificarAComposicaoDeTimesMaisComum(resultado);
-    }
-
     private TimesSemArgumentos getTimes(Composioes dadasAsComposicoes) {
         Time time1 = mock(Time.class);
         Time time2 = mock(Time.class);
@@ -218,59 +267,6 @@ public class ApiServiceTest {
         assertEquals(2, resultado.get().size());
         assertTrue(resultado.get().contains("Faker"));
         assertTrue(resultado.get().contains("Fallen"));
-    }
-
-    @Test
-    public void integrantesDoTimeMaisComumNoPeriodoEmpatado() {
-        // Criação de dados de exemplo
-        Time time1 = mock(Time.class);
-        Time time2 = mock(Time.class);
-        Time time3 = mock(Time.class);
-
-        LocalDate dataInicial = LocalDate.of(2024, 1, 1);
-        LocalDate dataFinal = LocalDate.of(2024, 12, 31);
-
-        // Mock do comportamento de composicaoTimes
-        ComposicaoTime composicaoTime1 = criarComposicao(1L, "Faker");
-        ComposicaoTime composicaoTime2 = criarComposicao(2L, "Fallen");
-        ComposicaoTime composicaoTime3 = criarComposicao(3L, "Victor");
-
-        when(time1.getComposicaoTimes()).thenReturn(Sets.newHashSet(composicaoTime1, composicaoTime2));
-        when(time2.getComposicaoTimes()).thenReturn(Sets.newHashSet(composicaoTime3, composicaoTime1));
-        when(time3.getComposicaoTimes()).thenReturn(Sets.newHashSet(composicaoTime1));
-
-        // Mock do método getNome do integrante
-        when(time1.getData()).thenReturn(LocalDate.of(2024, 6, 1));
-        when(time2.getData()).thenReturn(LocalDate.of(2024, 6, 1));
-        when(time3.getData()).thenReturn(LocalDate.of(2024, 6, 1));
-
-        // Lista de times
-        List<Time> times = Arrays.asList(time1, time2, time3);
-
-        // Chamada ao método
-        Optional<List<String>> resultado = Optional.ofNullable(apiService.integrantesDoTimeMaisComum(dataInicial, dataFinal, times));
-
-        verificarAComposicaoDeTimesMaisComum(resultado);
-    }
-
-    @Test
-    public void integrantesDoTimeMaisComum() {
-    }
-
-    @Test
-    public void funcaoMaisComum() {
-    }
-
-    @Test
-    public void franquiaMaisFamosa() {
-    }
-
-    @Test
-    public void contagemPorFranquia() {
-    }
-
-    @Test
-    public void contagemPorFuncao() {
     }
 
     private ComposicaoTime criarComposicao(Long id, String nome) {

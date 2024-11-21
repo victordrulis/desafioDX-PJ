@@ -70,6 +70,58 @@ public class IntegranteServiceImplTest {
         verificarAComposicaoDeTimesMaisComum(resultado);
     }
 
+    @Test
+    public void testGetComposicaoTimeMaisComum() {
+        Time timeMock1 = mock(Time.class);
+        Time timeMock2 = mock(Time.class);
+
+        // Mockando os integrantes
+        Integrante integranteMock1 = mock(Integrante.class);
+        Integrante integranteMock2 = mock(Integrante.class);
+
+        // Configurando os mocks
+        when(integranteMock1.getId()).thenReturn(1L);
+        when(integranteMock2.getId()).thenReturn(2L);
+
+        // Criando Set de integrantes para os times
+        Set<Integrante> integrantesMock1 = new TreeSet<>(Comparator.comparingLong(Integrante::getId));
+        integrantesMock1.add(integranteMock1);
+
+        Set<Integrante> integrantesMock2 = new TreeSet<>(Comparator.comparingLong(Integrante::getId));
+        integrantesMock2.add(integranteMock2);
+
+        // Mockando composicoes
+        ComposicaoTime composicaoTimeMock1 = mock(ComposicaoTime.class);
+        ComposicaoTime composicaoTimeMock2 = mock(ComposicaoTime.class);
+
+        when(composicaoTimeMock1.getIntegrante()).thenReturn(integranteMock1);
+        when(composicaoTimeMock1.getTime()).thenReturn(timeMock1);
+        when(composicaoTimeMock2.getIntegrante()).thenReturn(integranteMock1);
+        when(composicaoTimeMock2.getTime()).thenReturn(timeMock2);
+
+        // Mockando a lista de times
+        when(timeMock1.getComposicaoTimes()).thenReturn(Sets.newHashSet(composicaoTimeMock1));
+        when(timeMock1.getData()).thenReturn(dataTime);
+        when(timeMock2.getComposicaoTimes()).thenReturn(Sets.newHashSet(composicaoTimeMock2));
+        when(timeMock2.getData()).thenReturn(dataTime);
+
+        // Retorno esperado do método
+        Map<Set<Integrante>, Long> composicoesRepetidasMock = new HashMap<>();
+        composicoesRepetidasMock.put(integrantesMock1, 2L); // mock de repetição de 2 vezes
+
+        List<Time> times = Arrays.asList(timeMock1, timeMock2);
+
+        // Verificando se o método do serviço retorna o Set mais comum
+        Optional<Set<Integrante>> resultado = integranteService.getComposicaoTimeMaisComum(times, dataInicial, dataFinal);
+
+        assertTrue(resultado.isPresent());
+        assertEquals(integrantesMock1, resultado.get());
+    }
+
+    @Test
+    public void obterIntegranteComMaiorOcorrencia() {
+    }
+
     private void verificarAComposicaoDeTimesMaisComum(List<String> resultado) {
         assertNotNull(resultado);
         assertEquals(2, resultado.size());
@@ -136,58 +188,5 @@ public class IntegranteServiceImplTest {
             this.time2 = time2;
             this.times = times;
         }
-    }
-
-    @Test
-    public void testGetComposicaoTimeMaisComum() {
-        Time timeMock1 = mock(Time.class);
-        Time timeMock2 = mock(Time.class);
-
-        // Mockando os integrantes
-        Integrante integranteMock1 = mock(Integrante.class);
-        Integrante integranteMock2 = mock(Integrante.class);
-
-        // Configurando os mocks
-        when(integranteMock1.getId()).thenReturn(1L);
-        when(integranteMock2.getId()).thenReturn(2L);
-
-        // Criando Set de integrantes para os times
-        Set<Integrante> integrantesMock1 = new TreeSet<>(Comparator.comparingLong(Integrante::getId));
-        integrantesMock1.add(integranteMock1);
-
-        Set<Integrante> integrantesMock2 = new TreeSet<>(Comparator.comparingLong(Integrante::getId));
-        integrantesMock2.add(integranteMock2);
-
-        // Mockando composicoes
-        ComposicaoTime composicaoTimeMock1 = mock(ComposicaoTime.class);
-        ComposicaoTime composicaoTimeMock2 = mock(ComposicaoTime.class);
-
-        when(composicaoTimeMock1.getIntegrante()).thenReturn(integranteMock1);
-        when(composicaoTimeMock1.getTime()).thenReturn(timeMock1);
-        when(composicaoTimeMock2.getIntegrante()).thenReturn(integranteMock1);
-        when(composicaoTimeMock2.getTime()).thenReturn(timeMock2);
-
-        // Mockando a lista de times
-        when(timeMock1.getComposicaoTimes()).thenReturn(Sets.newHashSet(composicaoTimeMock1));
-        when(timeMock1.getData()).thenReturn(dataTime);
-        when(timeMock2.getComposicaoTimes()).thenReturn(Sets.newHashSet(composicaoTimeMock2));
-        when(timeMock2.getData()).thenReturn(dataTime);
-
-        // Retorno esperado do método
-        Map<Set<Integrante>, Long> composicoesRepetidasMock = new HashMap<>();
-        composicoesRepetidasMock.put(integrantesMock1, 2L); // mock de repetição de 2 vezes
-
-        List<Time> times = Arrays.asList(timeMock1, timeMock2);
-
-        // Verificando se o método do serviço retorna o Set mais comum
-        Optional<Set<Integrante>> resultado = integranteService.getComposicaoTimeMaisComum(times, dataInicial, dataFinal);
-
-        assertTrue(resultado.isPresent());
-        assertEquals(integrantesMock1, resultado.get());
-    }
-
-
-    @Test
-    public void obterIntegranteComMaiorOcorrencia() {
     }
 }
