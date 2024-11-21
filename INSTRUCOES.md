@@ -21,7 +21,7 @@
 1. Navegar até a pasta raiz do projeto 
 2. No terminal, executar
     ```
-   $ docker-compose up compose.yaml
+   $ docker-compose up -d
    ```
 3. Iniciar a aplicação subindo o arquivo *war* no Tomcat
    Caso deseje executar pela IDE que já possua um servidor embutido, pode-se comentar/excluir a denpedencia "spring-boot-starter-tomcat"

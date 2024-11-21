@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,17 +64,14 @@ public class IntegranteServiceImpl implements IntegranteService {
     /**
      * Vai retornar uma lista com os nomes dos integrantes do time mais comum dentro do período
      */
-    public Optional<List<String>> obterIntegrantesDoTimeMaisComumNoPeriodo(List<Time> times, LocalDate dataInicial, LocalDate dataFinal) {
-        Map<Time, Set<String>> timesComIntegrantes = times.stream()
-                .filter(time -> DateUtils.isDataNoPeriodo(time.getData(), dataInicial, dataFinal) && time.getComposicaoTimes() != null)
-                .collect(Collectors.toMap(Function.identity(), time -> time.getComposicaoTimes().stream()
-                        .map(composicao -> composicao.getIntegrante().getNome())
-                        .collect(Collectors.toSet())));
+    public List<String> obterComposicaoTimeMaisComum(List<Time> times, LocalDate dataInicial, LocalDate dataFinal) {
+        Optional<Set<Integrante>> composicaoTimeMaisComum = getComposicaoTimeMaisComum(times, dataInicial, dataFinal);
 
-        return timesComIntegrantes.entrySet().stream()
-                .max(Comparator.comparingInt(entry -> entry.getValue().size()))
-                .map(Map.Entry::getValue)
-                .map(ArrayList::new);
+        return composicaoTimeMaisComum
+                .map(lista -> lista.stream()
+                        .map(Integrante::getNome)
+                        .collect(Collectors.toList()))
+                .orElse(Collections.emptyList());
     }
 
     /**
@@ -82,7 +80,7 @@ public class IntegranteServiceImpl implements IntegranteService {
     public Optional<Integrante> obterIntegranteComMaiorOcorrencia(List<Time> times, LocalDate dataInicial, LocalDate dataFinal) {
 
         return times.stream()
-                .filter(time -> DateUtils.isDataNoPeriodo(time.getData(), dataInicial, dataFinal) && time.getComposicaoTimes() != null)
+                .filter(predicatePeriodoTime(dataInicial, dataFinal))
                 .flatMap(time -> time.getComposicaoTimes().stream())
                 .filter(composicao -> composicao != null && composicao.getIntegrante() != null)
                 .collect(Collectors.groupingBy(composicao -> composicao.getIntegrante().getId(), Collectors.counting()))
@@ -101,5 +99,35 @@ public class IntegranteServiceImpl implements IntegranteService {
                 .filter(integrante -> integrante.getId().equals(id))
                 .findFirst()
                 .orElse(null);
+    }
+
+
+    /**
+     * Encontra na lista de times a composicao de integrantes mais comum.
+     * Extrair as listas de integrantes dos times e contar quantas vezes cada lista de integrantes se repete
+     */
+    private Optional<Set<Integrante>> getComposicaoTimeMaisComum(List<Time> times, LocalDate dataInicial, LocalDate dataFinal) {
+        Map<Set<Integrante>, Long> composicoesRepetidas = times.stream()
+                .filter(predicatePeriodoTime(dataInicial, dataFinal))
+                .flatMap(time -> time.getComposicaoTimes().stream())
+                .map(ComposicaoTime::getIntegrante)
+                .map(integrante -> {
+                    // Cria um Set com o integrante, garantindo que ele seja único e ordenado
+                    Set<Integrante> integrantesOrdenados = new TreeSet<>(Comparator.comparingLong(Integrante::getId));
+                    integrantesOrdenados.add(integrante);
+                    return integrantesOrdenados;
+                })
+                .collect(Collectors.groupingBy(
+                        Function.identity(),
+                        Collectors.counting()
+                ));
+
+        return composicoesRepetidas.entrySet().stream()
+                .max(Map.Entry.comparingByValue()) // Encontra a composição com o maior número de repetições
+                .map(Map.Entry::getKey);
+    }
+
+    private Predicate<Time> predicatePeriodoTime(LocalDate dataInicial, LocalDate dataFinal) {
+        return time -> DateUtils.isDataNoPeriodo(time.getData(), dataInicial, dataFinal) && time.getComposicaoTimes() != null;
     }
 }

@@ -74,7 +74,7 @@ public class ApiService {
             return null;
         }
 
-        return integranteService.obterIntegrantesDoTimeMaisComumNoPeriodo(todosOsTimes, dataInicial, dataFinal).orElse(new ArrayList<>());
+        return integranteService.obterComposicaoTimeMaisComum(todosOsTimes, dataInicial, dataFinal);
     }
 
     /**
