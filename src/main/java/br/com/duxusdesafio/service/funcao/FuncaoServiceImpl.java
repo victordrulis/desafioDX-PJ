@@ -4,7 +4,6 @@ import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.business.model.Funcao;
 import br.com.duxusdesafio.business.repository.funcao.FuncaoRepository;
 import br.com.duxusdesafio.business.validator.funcao.FuncaoValidatorImpl;
-import br.com.duxusdesafio.service.funcao.FuncaoService;
 import br.com.duxusdesafio.view.funcao.FuncaoDto;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
@@ -47,7 +46,7 @@ public class FuncaoServiceImpl implements FuncaoService {
     public void excluir(Long id) throws BusinessException {
         funcaoValidator.validarNulo(id);
         Funcao funcao = getFuncao(id).orElse(null);
-        funcaoValidator.validarObjetoNaoExiste(funcao);
+        funcaoValidator.validarObjetoExiste(funcao);
 
         repository.delete(funcao);
     }

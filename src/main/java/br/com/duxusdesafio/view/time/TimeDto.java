@@ -28,7 +28,7 @@ public class TimeDto {
                 .id(time.getId())
                 .descricao(time.getDescricao())
                 .data(time.getData())
-                .integrantes(Optional.ofNullable(time.getComposicaoTime()).orElse(new HashSet<>()).stream()
+                .integrantes(Optional.ofNullable(time.getComposicaoTimes()).orElse(new HashSet<>()).stream()
                         .map(ComposicaoTime::getIntegrante)
                         .map(IntegranteDto::from)
                         .collect(Collectors.toList()))

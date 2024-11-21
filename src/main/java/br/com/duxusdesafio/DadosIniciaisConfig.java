@@ -4,9 +4,11 @@ import br.com.duxusdesafio.business.model.ComposicaoTime;
 import br.com.duxusdesafio.business.model.Franquia;
 import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.business.model.Time;
+import br.com.duxusdesafio.business.repository.composicaotime.ComposicaoTimeRepository;
 import br.com.duxusdesafio.business.repository.franquia.FranquiaRepository;
 import br.com.duxusdesafio.business.repository.integrante.IntegranteRepository;
 import br.com.duxusdesafio.business.repository.time.TimeRepository;
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -21,6 +23,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 
 @Configuration
 public class DadosIniciaisConfig extends WebMvcConfigurationSupport {
@@ -28,17 +31,25 @@ public class DadosIniciaisConfig extends WebMvcConfigurationSupport {
     private static final Logger logger = LoggerFactory.getLogger(DadosIniciaisConfig.class);
 
     @Bean
-    CommandLineRunner initDatabase(TimeRepository timeRepository, FranquiaRepository franquiaRepository, IntegranteRepository integranteRepository) {
+    CommandLineRunner initDatabase(TimeRepository timeRepository, FranquiaRepository franquiaRepository,
+                                   IntegranteRepository integranteRepository, ComposicaoTimeRepository composicaoTimeRepository) {
         return args -> {
-            Franquia franquia = Franquia.builder().id(4L).nome("Franquia Pre 1").build();
+            LocalDate data = LocalDate.of(2024, 11, 20);
+
+            Franquia franquia = Franquia.builder().nome("Franquia Pre 1").build();
             logger.info(String.format("Pre-carregando %s", franquiaRepository.save(franquia)));
 
-            Time time = new Time(1L, "time pre-carregado 1", LocalDate.now(), franquia, null);
-            logger.info(String.format("Pre-carregando %s", timeRepository.save(time)));
+            Time time = timeRepository.save(Time.builder().descricao("time pre-carregado 1").data(data).franquia(franquia).build());
+            logger.info(String.format("Pre-carregando %s", time));
 
-            Integrante integrante = Integrante.builder().nome("Integrante pre1").build();
-            logger.info(String.format("Pre-carregando %s", integranteRepository.save(integrante)));
+            Integrante integrante = integranteRepository.save(Integrante.builder().nome("Integrante pre1").build());
+            logger.info(String.format("Pre-carregando %s", integrante));
 
+            ComposicaoTime composicaoTime = ComposicaoTime.builder().integrante(integrante).time(time).data(data).build();
+            time.setComposicaoTimes(Sets.newHashSet(composicaoTime));
+            timeRepository.save(time);
+
+            logger.info(String.format("Pre-carregando %s", composicaoTime));
         };
     }
 

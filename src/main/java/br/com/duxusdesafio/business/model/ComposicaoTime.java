@@ -15,14 +15,14 @@ import java.time.LocalDate;
 @Builder
 public class ComposicaoTime {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_time")
     private Time time;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_integrante")
     private Integrante integrante;
 

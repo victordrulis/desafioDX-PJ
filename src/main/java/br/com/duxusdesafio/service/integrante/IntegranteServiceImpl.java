@@ -12,9 +12,8 @@ import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,7 +51,7 @@ public class IntegranteServiceImpl implements IntegranteService {
     public void excluir(Long id) throws BusinessException {
         integranteValidator.validarNulo(id);
         Integrante integrante = getIntegrante(id).orElse(null);
-        integranteValidator.validarObjetoNaoExiste(integrante);
+        integranteValidator.validarObjetoExiste(integrante);
 
         repository.delete(integrante);
     }
@@ -62,14 +61,29 @@ public class IntegranteServiceImpl implements IntegranteService {
     }
 
     /**
-     * Encontra o integrante com maior ocorrência, considerando o periodo,
-     * através da coleta todas as composições de todos os times em uma lista
+     * Vai retornar uma lista com os nomes dos integrantes do time mais comum dentro do período
+     */
+    public Optional<List<String>> obterIntegrantesDoTimeMaisComumNoPeriodo(List<Time> times, LocalDate dataInicial, LocalDate dataFinal) {
+        Map<Time, Set<String>> timesComIntegrantes = times.stream()
+                .filter(time -> DateUtils.isDataNoPeriodo(time.getData(), dataInicial, dataFinal) && time.getComposicaoTimes() != null)
+                .collect(Collectors.toMap(Function.identity(), time -> time.getComposicaoTimes().stream()
+                        .map(composicao -> composicao.getIntegrante().getNome())
+                        .collect(Collectors.toSet())));
+
+        return timesComIntegrantes.entrySet().stream()
+                .max(Comparator.comparingInt(entry -> entry.getValue().size()))
+                .map(Map.Entry::getValue)
+                .map(ArrayList::new);
+    }
+
+    /**
+     * Vai retornar o integrante que tiver presente na maior quantidade de times dentro do período
      */
     public Optional<Integrante> obterIntegranteComMaiorOcorrencia(List<Time> times, LocalDate dataInicial, LocalDate dataFinal) {
 
         return times.stream()
-                .filter(time -> DateUtils.isDataNoPeriodo(time.getData(), dataInicial, dataFinal) && time.getComposicaoTime() != null)
-                .flatMap(time -> time.getComposicaoTime().stream())
+                .filter(time -> DateUtils.isDataNoPeriodo(time.getData(), dataInicial, dataFinal) && time.getComposicaoTimes() != null)
+                .flatMap(time -> time.getComposicaoTimes().stream())
                 .filter(composicao -> composicao != null && composicao.getIntegrante() != null)
                 .collect(Collectors.groupingBy(composicao -> composicao.getIntegrante().getId(), Collectors.counting()))
                 .entrySet().stream()
@@ -82,7 +96,7 @@ public class IntegranteServiceImpl implements IntegranteService {
      */
     private Integrante getIntegrantePorId(Long id, List<Time> times) {
         return times.stream()
-                .flatMap(time -> time.getComposicaoTime().stream())
+                .flatMap(time -> time.getComposicaoTimes().stream())
                 .map(ComposicaoTime::getIntegrante)
                 .filter(integrante -> integrante.getId().equals(id))
                 .findFirst()

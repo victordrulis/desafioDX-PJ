@@ -17,7 +17,7 @@ public abstract class BusinessValidator {
                 .orElseThrow(() -> new BusinessException(mensagem));
     }
 
-    public void validarObjetoNaoExiste(Object object) {
+    public void validarObjetoExiste(Object object) {
         validarNulo(object, OBJETO_NAO_EXISTE);
     }
 }

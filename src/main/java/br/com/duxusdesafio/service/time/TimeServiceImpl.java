@@ -69,7 +69,7 @@ public class TimeServiceImpl implements TimeService {
     public void excluir(Long id) throws BusinessException {
         timeValidator.validarNulo(id);
         Time time = getTime(id).orElse(null);
-        timeValidator.validarObjetoNaoExiste(time);
+        timeValidator.validarObjetoExiste(time);
 
         repository.delete(time);
     }

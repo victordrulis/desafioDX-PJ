@@ -2,13 +2,11 @@ package br.com.duxusdesafio.service;
 
 import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.business.model.ComposicaoTime;
-import br.com.duxusdesafio.business.model.Franquia;
 import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.business.model.Time;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -83,8 +81,8 @@ public class ApiServiceTest {
         ComposicaoTime composicaoTime2 = ComposicaoTime.builder().time(time2).integrante(integrante2).build();
         ComposicaoTime composicaoTime3 = ComposicaoTime.builder().time(time3).integrante(integrante1).build();
 
-        time1.setComposicaoTime(Sets.newHashSet(composicaoTime1, composicaoTime3));
-        time2.setComposicaoTime(Sets.newHashSet(composicaoTime2));
+        time1.setComposicaoTimes(Sets.newHashSet(composicaoTime1, composicaoTime3));
+        time2.setComposicaoTimes(Sets.newHashSet(composicaoTime2));
 
         Integrante integranteMaisUsado = apiService.integranteMaisUsado(DATA_NOVEMBRO_2022, DATA_HOJE, Lists.newArrayList(time1, time2, time3));
 

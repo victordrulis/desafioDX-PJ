@@ -48,8 +48,8 @@ public class ApiController {
     @GetMapping("/integrante-mais-usado/{dataInicial}/{dataFinal}")
     public ResponseEntity<?> integranteMaisUsado(@PathVariable LocalDate dataInicial, @PathVariable LocalDate dataFinal) {
         List<Time> timesNoPeriodo = timeService.obterTodosNoPeriodo(dataInicial, dataFinal);
-        Integrante integranteMaisUsado = integranteService.obterIntegranteComMaiorOcorrencia(timesNoPeriodo, dataInicial, dataFinal).orElse(null);
-        return apiControllerService.gerarResponse(integranteMaisUsado, HttpStatus.ACCEPTED);
+        Integrante integranteMaisUsado = apiService.integranteMaisUsado(dataInicial, dataFinal, timesNoPeriodo);
+        return apiControllerService.gerarResponse(integranteMaisUsado, HttpStatus.OK);
     }
 
     /**
@@ -57,9 +57,10 @@ public class ApiController {
      * dentro do período
      */
     @GetMapping("/integrante-do-time-mais-comum")
-    public ResponseEntity<?> integrantesDoTimeMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return null;
+    public ResponseEntity<?> integrantesDoTimeMaisComum(LocalDate dataInicial, LocalDate dataFinal) {
+        List<Time> timesNoPeriodo = timeService.obterTodosNoPeriodo(dataInicial, dataFinal);
+        List<String> integrantesDoTimeMaisComum = apiService.integrantesDoTimeMaisComum(dataInicial, dataFinal, timesNoPeriodo);
+        return apiControllerService.gerarResponse(integrantesDoTimeMaisComum, HttpStatus.OK);
     }
 
     /**

@@ -18,7 +18,7 @@ public class IntegranteDto {
     public static IntegranteDto from(Integrante integrante) {
         return builder()
                 .nome(integrante.getNome())
-                .composicaoTime(integrante.getComposicaoTime().stream()
+                .composicaoTime(integrante.getComposicaoTimes().stream()
                         .map(ComposicaoTimeDto::from)
                         .collect(Collectors.toList()))
                 .build();

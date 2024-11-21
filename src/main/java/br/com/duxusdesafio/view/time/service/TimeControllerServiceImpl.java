@@ -4,6 +4,8 @@ import br.com.duxusdesafio.service.time.TimeService;
 import br.com.duxusdesafio.view.api.service.ApiControllerServiceAbstract;
 import br.com.duxusdesafio.view.time.TimeDto;
 import br.com.duxusdesafio.view.time.validator.TimeApiValidatorImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ import static java.util.Objects.isNull;
 @Service
 public class TimeControllerServiceImpl extends ApiControllerServiceAbstract implements TimeControllerService{
 
+    private static final Logger logger = LoggerFactory.getLogger(TimeControllerServiceImpl.class);
+
     private final TimeService timeService;
     private final TimeApiValidatorImpl timeApiValidator;
 
@@ -25,8 +29,14 @@ public class TimeControllerServiceImpl extends ApiControllerServiceAbstract impl
 
     @Override
     public ResponseEntity<?> obter(Long id) {
-        TimeDto timeDto = timeService.obter(id);
-        return super.gerarResponse(timeDto, HttpStatus.ACCEPTED);
+        try {
+            TimeDto timeDto = timeService.obter(id);
+            return super.gerarResponse(timeDto, HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            logger.error("Erro ao obter time", e);
+        }
+
+        return super.gerarResponse(null, HttpStatus.NO_CONTENT);
     }
 
     @Override

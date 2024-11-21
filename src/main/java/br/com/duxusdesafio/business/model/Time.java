@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.business.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,12 +9,12 @@ import java.util.Set;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Time {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String descricao;
@@ -25,7 +26,10 @@ public class Time {
     private Franquia franquia;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "time", cascade = CascadeType.ALL)
+    @JsonIgnore
     @ToString.Exclude
-    private Set<ComposicaoTime> composicaoTime;
+    @EqualsAndHashCode.Exclude
+    @Singular
+    private Set<ComposicaoTime> composicaoTimes;
 
 }

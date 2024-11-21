@@ -24,15 +24,17 @@ Content-Type:application/json
 {
 
 }
+
 # TIME ----------------
 ###
-GET http://localhost:8080/escalacao/api/time/1
+GET http://localhost:8080/escalacao/api/time/5
 Accept: application/json
 Content-Type:application/json
 ###
 GET http://localhost:8080/escalacao/api/time/listar
 Accept: application/json
 Content-Type:application/json
+
 ###
 POST http://localhost:8080/escalacao/api/time/salvar
 Accept: application/json

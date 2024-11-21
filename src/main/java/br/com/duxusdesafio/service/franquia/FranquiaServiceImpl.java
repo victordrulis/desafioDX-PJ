@@ -46,7 +46,7 @@ public class FranquiaServiceImpl implements FranquiaService {
     public void excluir(Long id) throws BusinessException {
         franquiaValidator.validarNulo(id);
         Franquia franquia = getFranquia(id).orElse(null);
-        franquiaValidator.validarObjetoNaoExiste(franquia);
+        franquiaValidator.validarObjetoExiste(franquia);
 
         repository.delete(franquia);
     }

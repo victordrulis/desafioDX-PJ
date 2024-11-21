@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,6 @@ public class ApiService {
     public Integrante integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         try {
             DateUtils.validarDataNaoNula(dataInicial);
-            DateUtils.validarDataNaoNula(dataFinal);
             DateUtils.validarDataInicialAposDataFinal(dataInicial, dataFinal);
             CollectionUtils.validarListaVazia(todosOsTimes);
         } catch (BusinessException exception) {
@@ -65,8 +65,16 @@ public class ApiService {
      * dentro do período
      */
     public List<String> integrantesDoTimeMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return null;
+        try {
+            DateUtils.validarDataNaoNula(dataInicial);
+            DateUtils.validarDataInicialAposDataFinal(dataInicial, dataFinal);
+            CollectionUtils.validarListaVazia(todosOsTimes);
+        } catch (BusinessException exception) {
+            LOGGER.error(ARGUMENTOS_INVALIDOS_NA_BUSCA_DE_INTEGRANTE_MAIS_USADO_NO_PERIODO, exception);
+            return null;
+        }
+
+        return integranteService.obterIntegrantesDoTimeMaisComumNoPeriodo(todosOsTimes, dataInicial, dataFinal).orElse(new ArrayList<>());
     }
 
     /**

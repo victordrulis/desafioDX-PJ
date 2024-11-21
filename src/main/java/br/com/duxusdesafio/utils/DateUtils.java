@@ -4,6 +4,8 @@ import br.com.duxusdesafio.business.exception.BusinessException;
 
 import java.time.LocalDate;
 
+import static java.util.Objects.isNull;
+
 /**
  * Classe de auxilio para datas
  */
@@ -20,7 +22,7 @@ public abstract class DateUtils {
     }
 
     public static void validarDataInicialAposDataFinal(LocalDate dataInicial, LocalDate dataFinal) throws BusinessException {
-        if(dataInicial.isAfter(dataFinal)) {
+        if(!isNull(dataFinal) && dataInicial.isAfter(dataFinal)) {
             throw new BusinessException(DATA_INICIAL_POSTERIOR_DATA_FINAL);
         }
     }
