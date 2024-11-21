@@ -3,7 +3,7 @@ package br.com.duxusdesafio.view.time.validator;
 import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.business.model.Time;
 import br.com.duxusdesafio.business.validator.api.ApiValidator;
-import br.com.duxusdesafio.utils.DateUtils;
+import br.com.duxusdesafio.business.validator.api.BusinessValidator;
 import br.com.duxusdesafio.view.time.TimeDto;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +26,7 @@ public class TimeApiValidatorImpl extends ApiValidator implements TimeApiValidat
             throw new BusinessException("O time não possui descrição.");
         }
 
-        DateUtils.validarDataNaoNula(timeDto.getData());
+        BusinessValidator.validarNulo((timeDto.getData()));
     }
 
 }

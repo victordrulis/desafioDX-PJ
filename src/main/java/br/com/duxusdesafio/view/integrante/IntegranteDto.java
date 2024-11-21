@@ -1,33 +1,37 @@
 package br.com.duxusdesafio.view.integrante;
 
-import br.com.duxusdesafio.business.model.ComposicaoTime;
 import br.com.duxusdesafio.business.model.Integrante;
-import br.com.duxusdesafio.view.composicaotime.ComposicaoTimeDto;
+import br.com.duxusdesafio.view.franquia.FranquiaDto;
+import br.com.duxusdesafio.view.funcao.FuncaoDto;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Singular;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Data
 @Builder
 public class IntegranteDto implements Serializable {
     private Long id;
     private String nome;
-    private Long franquiaId;
-    private Long funcaoId;
-    private List<ComposicaoTimeDto> composicaoTimes;
+    private FranquiaDto franquia;
+    private FuncaoDto funcao;
+    @Singular
+    private List<TimeDoIntegranteDto> times;
 
     public static IntegranteDto from(Integrante integrante) {
-        return builder()
+        IntegranteDtoBuilder builder = builder()
+                .id(integrante.getId())
                 .nome(integrante.getNome())
-                .franquiaId(integrante.getFranquia().getId())
-                .funcaoId(integrante.getFuncao().getId())
-                .composicaoTimes(integrante.getComposicaoTimes().stream()
-                        .map(ComposicaoTimeDto::from)
-                        .collect(Collectors.toList()))
-                .build();
+                .franquia(FranquiaDto.from(integrante.getFranquia()))
+                .funcao(FuncaoDto.from(integrante.getFuncao()));
+
+        integrante.getComposicaoTimes().stream()
+                .filter(Objects::nonNull)
+                .forEach(composicaoTime -> builder.time(TimeDoIntegranteDto.from(composicaoTime.getTime())));
+
+        return builder.build();
     }
 }

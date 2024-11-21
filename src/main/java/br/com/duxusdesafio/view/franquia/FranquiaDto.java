@@ -15,6 +15,7 @@ public class FranquiaDto {
 
     public static FranquiaDto from(Franquia franquia) {
         return builder()
+                .id(franquia.getId())
                 .nome(franquia.getNome())
                 .build();
     }

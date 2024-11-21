@@ -15,6 +15,7 @@ public class FuncaoDto {
 
     public static FuncaoDto from(Funcao funcao) {
         return builder()
+                .id(funcao.getId())
                 .nome(funcao.getNome())
                 .build();
     }

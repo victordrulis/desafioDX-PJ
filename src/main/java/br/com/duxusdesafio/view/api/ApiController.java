@@ -7,6 +7,8 @@ import br.com.duxusdesafio.service.ApiService;
 import br.com.duxusdesafio.service.integrante.IntegranteServiceImpl;
 import br.com.duxusdesafio.service.time.TimeService;
 import br.com.duxusdesafio.view.api.service.ApiControllerServiceImpl;
+import br.com.duxusdesafio.view.integrante.IntegranteDto;
+import br.com.duxusdesafio.view.time.TimeDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -38,7 +41,11 @@ public class ApiController {
      */
     @GetMapping("/time-da-data/{data}")
     public ResponseEntity<?> timeDaData(@PathVariable LocalDate data) throws BusinessException {
-        return apiControllerService.gerarResponse(apiService.timeDaData(data, timeService.obterTodos()), HttpStatus.ACCEPTED);
+        TimeDto timeDto = Optional.ofNullable(apiService.timeDaData(data, timeService.obterTodos()))
+                .map(TimeDto::from)
+                .orElseGet(TimeDto::new);
+
+        return apiControllerService.gerarResponse(timeDto, HttpStatus.OK);
     }
 
     /**
@@ -48,7 +55,8 @@ public class ApiController {
     @GetMapping("/integrante-mais-usado/{dataInicial}/{dataFinal}")
     public ResponseEntity<?> integranteMaisUsado(@PathVariable LocalDate dataInicial, @PathVariable LocalDate dataFinal) {
         List<Time> timesNoPeriodo = timeService.obterTodosNoPeriodo(dataInicial, dataFinal);
-        Integrante integranteMaisUsado = apiService.integranteMaisUsado(dataInicial, dataFinal, timesNoPeriodo);
+        IntegranteDto integranteMaisUsado = IntegranteDto.from(Optional.ofNullable(apiService.integranteMaisUsado(dataInicial, dataFinal, timesNoPeriodo))
+                .orElseGet(Integrante::new));
         return apiControllerService.gerarResponse(integranteMaisUsado, HttpStatus.OK);
     }
 

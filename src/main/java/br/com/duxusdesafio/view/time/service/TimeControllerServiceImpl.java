@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
@@ -30,7 +31,7 @@ public class TimeControllerServiceImpl extends ApiControllerServiceAbstract impl
     @Override
     public ResponseEntity<?> obter(Long id) {
         try {
-            TimeDto timeDto = timeService.obter(id);
+            TimeDto timeDto = TimeDto.from(timeService.obter(id));
             return super.gerarResponse(timeDto, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             logger.error("Erro ao obter time", e);
@@ -41,12 +42,16 @@ public class TimeControllerServiceImpl extends ApiControllerServiceAbstract impl
 
     @Override
     public ResponseEntity<?> listar(LocalDate data) {
-        return isNull(data) ? listar() : super.ok(timeService.obterTodosPorData(data));
+        return isNull(data) ? listar() : super.ok(timeService.obterTodosPorData(data).stream()
+                .map(TimeDto::from)
+                .collect(Collectors.toList()));
     }
 
     @Override
     public ResponseEntity<?> listar() {
-        return super.ok(timeService.obterTodos());
+        return super.ok(timeService.obterTodos().stream()
+                .map(TimeDto::from)
+                .collect(Collectors.toList()));
     }
 
     @Override
@@ -54,7 +59,7 @@ public class TimeControllerServiceImpl extends ApiControllerServiceAbstract impl
         timeApiValidator.validarFormulario(timeDto);
         timeService.salvar(timeDto);
 
-        return super.ok(null);
+        return super.okVazio();
     }
 
     @Override

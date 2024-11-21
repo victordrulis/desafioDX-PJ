@@ -3,6 +3,7 @@ package br.com.duxusdesafio.service.time;
 import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.business.model.Time;
 import br.com.duxusdesafio.business.repository.time.TimeRepository;
+import br.com.duxusdesafio.business.validator.api.BusinessValidator;
 import br.com.duxusdesafio.business.validator.time.TimeValidatorImpl;
 import br.com.duxusdesafio.utils.DateUtils;
 import br.com.duxusdesafio.view.time.TimeDto;
@@ -41,7 +42,7 @@ public class TimeServiceImpl implements TimeService {
 
     @Override
     public List<Time> obterTodosPorData(LocalDate data) throws BusinessException {
-        timeValidator.validarNulo(data);
+        BusinessValidator.validarNulo(data);
 
         return obterTodos().stream()
                 .filter(time -> time.getData().isEqual(data))
@@ -58,18 +59,16 @@ public class TimeServiceImpl implements TimeService {
     }
 
     @Override
-    public TimeDto obter(Long id) throws BusinessException {
-        timeValidator.validarNulo(id);
-        return getTime(id)
-                .map(TimeDto::from)
-                .orElse(null);
+    public Time obter(Long id) throws BusinessException {
+        BusinessValidator.validarNulo(id);
+        return getTime(id).orElse(null);
     }
 
     @Override
     public void excluir(Long id) throws BusinessException {
-        timeValidator.validarNulo(id);
+        BusinessValidator.validarNulo(id);
         Time time = getTime(id).orElse(null);
-        timeValidator.validarObjetoExiste(time);
+        BusinessValidator.validarObjetoExiste(time);
 
         repository.delete(time);
     }
