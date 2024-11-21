@@ -22,9 +22,6 @@ public class Time {
     @Column(nullable = false)
     private LocalDate data;
 
-    @OneToOne
-    private Franquia franquia;
-
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "time", cascade = CascadeType.ALL)
     @JsonIgnore
     @ToString.Exclude

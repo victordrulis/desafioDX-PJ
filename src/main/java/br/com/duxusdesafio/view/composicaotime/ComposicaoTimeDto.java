@@ -6,20 +6,23 @@ import br.com.duxusdesafio.view.time.TimeDto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-import static org.springframework.util.CollectionUtils.isEmpty;
+import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
 @Data
 @Builder
 public class ComposicaoTimeDto {
 
-    private Set<IntegranteDto> listaIntegrante;
+    private Long id;
+    private List<IntegranteDto> listaIntegrante;
     private TimeDto time;
 
     public static ComposicaoTimeDto from(ComposicaoTime composicaoTime) {
         ComposicaoTimeDto composicaoTimeDto = builder()
+                .id(composicaoTime.getId())
                 .time(TimeDto.from(composicaoTime.getTime()))
                 .build();
 
@@ -30,7 +33,7 @@ public class ComposicaoTimeDto {
 
     public void addIntegrante(IntegranteDto integranteDto) {
         if(isEmpty(listaIntegrante)) {
-            listaIntegrante = new HashSet<>();
+            listaIntegrante = new ArrayList<>();
         }
 
         listaIntegrante.add(integranteDto);

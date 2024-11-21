@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.view.integrante.service;
 
+import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.service.integrante.IntegranteService;
 import br.com.duxusdesafio.view.api.service.ApiControllerServiceAbstract;
 import br.com.duxusdesafio.view.integrante.IntegranteDto;
@@ -7,6 +8,9 @@ import br.com.duxusdesafio.view.integrante.validator.IntegranteApiValidatorImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class IntegranteControllerServiceImpl extends ApiControllerServiceAbstract implements IntegranteControllerService {
@@ -27,7 +31,10 @@ public class IntegranteControllerServiceImpl extends ApiControllerServiceAbstrac
 
     @Override
     public ResponseEntity<?> listar() {
-        return super.ok(integranteService.obterTodos());
+        List<IntegranteDto> integranteDtos = integranteService.obterTodos().stream()
+                .map(IntegranteDto::from)
+                .collect(Collectors.toList());
+        return super.ok(integranteDtos);
     }
 
     @Override

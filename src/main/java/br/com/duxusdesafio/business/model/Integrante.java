@@ -18,6 +18,10 @@ public class Integrante {
     private Long id;
 
     private String nome;
+    @OneToOne
+    private Funcao funcao;
+    @OneToOne
+    private Franquia franquia;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "integrante", cascade = CascadeType.ALL)
     @JsonIgnore

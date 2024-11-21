@@ -13,7 +13,7 @@ GET http://localhost:8080/escalacao/api
 Accept: application/json
 Content-Type:application/json
 ###
-GET http://localhost:8080/escalacao/api/time-da-data/21-04-1987
+GET http://localhost:8080/escalacao/api/time-da-data/20-11-2024
 Accept: application/json
 Content-Type:application/json
 ###
@@ -27,7 +27,7 @@ Content-Type:application/json
 
 # TIME ----------------
 ###
-GET http://localhost:8080/escalacao/api/time/5
+GET http://localhost:8080/escalacao/api/time/1
 Accept: application/json
 Content-Type:application/json
 ###
@@ -54,7 +54,7 @@ Content-Type:application/json
 
 # FRANQUIA ------------
 ###
-GET http://localhost:8080/escalacao/api/franquia/12
+GET http://localhost:8080/escalacao/api/franquia/1
 Accept: application/json
 Content-Type:application/json
 ###
@@ -72,7 +72,7 @@ Content-Type:application/json
 
 # FUNCAO ------------
 ###
-GET http://localhost:8080/escalacao/api/funcao/14
+GET http://localhost:8080/escalacao/api/funcao/1
 Accept: application/json
 Content-Type:application/json
 ###
@@ -90,7 +90,7 @@ Content-Type:application/json
 
 # INTEGRANTE ----------
 ###
-GET http://localhost:8080/escalacao/api/integrante/14
+GET http://localhost:8080/escalacao/api/integrante/1
 Accept: application/json
 Content-Type:application/json
 ###
@@ -103,5 +103,7 @@ Accept: application/json
 Content-Type:application/json
 
 {
-    "nome": "integrante request"
+    "nome": "integrante request",
+    "funcao_id": 1,
+    "franquia_id": 1
 }
