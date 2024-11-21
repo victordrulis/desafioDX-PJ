@@ -1,7 +1,7 @@
 package br.com.duxusdesafio.view.integrante.service;
 
 import br.com.duxusdesafio.service.integrante.IntegranteService;
-import br.com.duxusdesafio.view.api.service.ApiControllerServiceImpl;
+import br.com.duxusdesafio.view.api.service.ApiControllerServiceAbstract;
 import br.com.duxusdesafio.view.integrante.IntegranteDto;
 import br.com.duxusdesafio.view.integrante.validator.IntegranteApiValidatorImpl;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class IntegranteControllerServiceImpl extends ApiControllerServiceImpl implements IntegranteControllerService {
+public class IntegranteControllerServiceImpl extends ApiControllerServiceAbstract implements IntegranteControllerService {
 
     private final IntegranteService integranteService;
     private final IntegranteApiValidatorImpl integranteApiValidator;

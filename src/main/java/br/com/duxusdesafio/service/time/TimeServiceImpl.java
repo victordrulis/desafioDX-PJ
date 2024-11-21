@@ -4,6 +4,7 @@ import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.business.model.Time;
 import br.com.duxusdesafio.business.repository.time.TimeRepository;
 import br.com.duxusdesafio.business.validator.time.TimeValidatorImpl;
+import br.com.duxusdesafio.utils.DateUtils;
 import br.com.duxusdesafio.view.time.TimeDto;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,15 @@ public class TimeServiceImpl implements TimeService {
 
         return obterTodos().stream()
                 .filter(time -> time.getData().isEqual(data))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Time> obterTodosNoPeriodo(LocalDate dataInicial, LocalDate dataFinal) throws BusinessException {
+        DateUtils.validarDataInicialAposDataFinal(dataInicial, dataFinal);
+
+        return obterTodos().stream()
+                .filter(time -> DateUtils.isDataNoPeriodo(time.getData(), dataInicial, dataFinal))
                 .collect(Collectors.toList());
     }
 

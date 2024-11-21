@@ -1,7 +1,7 @@
 package br.com.duxusdesafio.view.franquia.service;
 
 import br.com.duxusdesafio.service.franquia.FranquiaService;
-import br.com.duxusdesafio.view.api.service.ApiControllerServiceImpl;
+import br.com.duxusdesafio.view.api.service.ApiControllerServiceAbstract;
 import br.com.duxusdesafio.view.franquia.FranquiaDto;
 import br.com.duxusdesafio.view.franquia.validator.FranquiaApiValidatorImpl;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FranquiaControllerServiceImpl extends ApiControllerServiceImpl implements FranquiaControllerService {
+public class FranquiaControllerServiceImpl extends ApiControllerServiceAbstract implements FranquiaControllerService {
 
     private final FranquiaService franquiaService;
     private final FranquiaApiValidatorImpl franquiaApiValidator;

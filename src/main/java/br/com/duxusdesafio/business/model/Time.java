@@ -1,9 +1,6 @@
 package br.com.duxusdesafio.business.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -28,6 +25,7 @@ public class Time {
     private Franquia franquia;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "time", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private Set<ComposicaoTime> composicaoTime;
 
 }

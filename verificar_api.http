@@ -7,15 +7,23 @@
 # Publisher: Huachao Mao
 # VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
 
-# ------------------------------------------
-
+# ApiService ------------------------------------------
 ###
 GET http://localhost:8080/escalacao/api
 Accept: application/json
 Content-Type:application/json
 ###
 GET http://localhost:8080/escalacao/api/time-da-data/21-04-1987
+Accept: application/json
+Content-Type:application/json
+###
+GET http://localhost:8080/escalacao/api/integrante-mais-usado/01-11-2022/20-11-2024
+Accept: application/json
+Content-Type:application/json
 
+{
+
+}
 # TIME ----------------
 ###
 GET http://localhost:8080/escalacao/api/time/1

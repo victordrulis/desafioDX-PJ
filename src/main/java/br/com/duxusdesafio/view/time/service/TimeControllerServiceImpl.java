@@ -1,7 +1,7 @@
 package br.com.duxusdesafio.view.time.service;
 
 import br.com.duxusdesafio.service.time.TimeService;
-import br.com.duxusdesafio.view.api.service.ApiControllerServiceImpl;
+import br.com.duxusdesafio.view.api.service.ApiControllerServiceAbstract;
 import br.com.duxusdesafio.view.time.TimeDto;
 import br.com.duxusdesafio.view.time.validator.TimeApiValidatorImpl;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import static java.util.Objects.isNull;
 
 @Service
-public class TimeControllerServiceImpl extends ApiControllerServiceImpl implements TimeControllerService{
+public class TimeControllerServiceImpl extends ApiControllerServiceAbstract implements TimeControllerService{
 
     private final TimeService timeService;
     private final TimeApiValidatorImpl timeApiValidator;

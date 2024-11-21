@@ -4,6 +4,7 @@ import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.business.model.Time;
 import br.com.duxusdesafio.business.validator.api.ApiValidator;
+import br.com.duxusdesafio.service.integrante.IntegranteServiceImpl;
 import br.com.duxusdesafio.utils.CollectionUtils;
 import br.com.duxusdesafio.utils.DateUtils;
 import org.slf4j.Logger;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Service que possuirá as regras de negócio para o processamento dos dados solicitados no desafio!
@@ -21,12 +21,15 @@ import java.util.stream.Collectors;
 @Service
 public class ApiService {
 
+    public static final String ARGUMENTOS_INVALIDOS_NA_BUSCA_DE_INTEGRANTE_MAIS_USADO_NO_PERIODO = "Argumentos inválidos na busca de integrante mais usado no periodo.";
     private final Logger LOGGER = LoggerFactory.getLogger(ApiService.class);
 
     private final ApiValidator apiValidator;
+    private final IntegranteServiceImpl integranteService;
 
-    public ApiService(ApiValidator apiValidator) {
+    public ApiService(ApiValidator apiValidator, IntegranteServiceImpl integranteService) {
         this.apiValidator = apiValidator;
+        this.integranteService = integranteService;
     }
 
     /**
@@ -41,27 +44,20 @@ public class ApiService {
     }
 
     /**
-     * Vai retornar o integrante que estiver presente na maior quantidade de times
-     * dentro do período
+     * Vai retornar o integrante que estiver presente na maior quantidade de times dentro do período
      */
     public Integrante integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         try {
             DateUtils.validarDataNaoNula(dataInicial);
             DateUtils.validarDataNaoNula(dataFinal);
+            DateUtils.validarDataInicialAposDataFinal(dataInicial, dataFinal);
             CollectionUtils.validarListaVazia(todosOsTimes);
         } catch (BusinessException exception) {
-            LOGGER.error("Argumentos inválidos na busca de time na data.", exception);
+            LOGGER.error(ARGUMENTOS_INVALIDOS_NA_BUSCA_DE_INTEGRANTE_MAIS_USADO_NO_PERIODO, exception);
             return null;
         }
 
-        List<Time> timesNoPeriodo = todosOsTimes.stream()
-                .filter(time -> time.getData().isAfter(dataInicial))
-                .filter(time -> time.getData().isBefore(dataFinal))
-                .collect(Collectors.toList());
-
-
-
-        return null;
+        return integranteService.obterIntegranteComMaiorOcorrencia(todosOsTimes, dataInicial, dataFinal).orElse(null);
     }
 
     /**

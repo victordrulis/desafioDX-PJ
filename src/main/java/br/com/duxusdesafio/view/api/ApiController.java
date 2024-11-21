@@ -4,8 +4,9 @@ import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.business.model.Time;
 import br.com.duxusdesafio.service.ApiService;
+import br.com.duxusdesafio.service.integrante.IntegranteServiceImpl;
 import br.com.duxusdesafio.service.time.TimeService;
-import br.com.duxusdesafio.view.time.service.TimeControllerServiceImpl;
+import br.com.duxusdesafio.view.api.service.ApiControllerServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,14 +21,16 @@ import java.util.List;
 @RequestMapping("/api")
 public class ApiController {
 
-    private final TimeControllerServiceImpl timeControllerService;
+    private final ApiControllerServiceImpl apiControllerService;
     private final ApiService apiService;
     private final TimeService timeService;
+    private final IntegranteServiceImpl integranteService;
 
-    public ApiController(TimeControllerServiceImpl timeControllerService, ApiService apiService, TimeService timeService) {
-        this.timeControllerService = timeControllerService;
+    public ApiController(ApiControllerServiceImpl apiControllerService, ApiService apiService, TimeService timeService, IntegranteServiceImpl integranteService) {
+        this.apiControllerService = apiControllerService;
         this.apiService = apiService;
         this.timeService = timeService;
+        this.integranteService = integranteService;
     }
 
     /**
@@ -35,17 +38,18 @@ public class ApiController {
      */
     @GetMapping("/time-da-data/{data}")
     public ResponseEntity<?> timeDaData(@PathVariable LocalDate data) throws BusinessException {
-        return timeControllerService.gerarResponse(apiService.timeDaData(data, timeService.obterTodos()), HttpStatus.ACCEPTED);
+        return apiControllerService.gerarResponse(apiService.timeDaData(data, timeService.obterTodos()), HttpStatus.ACCEPTED);
     }
 
     /**
      * Vai retornar o integrante que estiver presente na maior quantidade de times
      * dentro do período
      */
-    @GetMapping("/integrante-mais-usado")
-    public ResponseEntity<?> integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return timeControllerService.gerarResponse(new Integrante(), HttpStatus.ACCEPTED);
+    @GetMapping("/integrante-mais-usado/{dataInicial}/{dataFinal}")
+    public ResponseEntity<?> integranteMaisUsado(@PathVariable LocalDate dataInicial, @PathVariable LocalDate dataFinal) {
+        List<Time> timesNoPeriodo = timeService.obterTodosNoPeriodo(dataInicial, dataFinal);
+        Integrante integranteMaisUsado = integranteService.obterIntegranteComMaiorOcorrencia(timesNoPeriodo, dataInicial, dataFinal).orElse(null);
+        return apiControllerService.gerarResponse(integranteMaisUsado, HttpStatus.ACCEPTED);
     }
 
     /**

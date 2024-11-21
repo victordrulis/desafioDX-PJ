@@ -19,6 +19,7 @@ public class Integrante {
     private String nome;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "integrante", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private Set<ComposicaoTime> composicaoTime;
 
 }

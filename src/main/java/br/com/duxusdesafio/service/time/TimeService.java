@@ -11,6 +11,7 @@ public interface TimeService {
     void salvar(TimeDto timeDto) throws BusinessException;
     List<Time> obterTodos() throws BusinessException;
     List<Time> obterTodosPorData(LocalDate data) throws BusinessException;
+    List<Time> obterTodosNoPeriodo(LocalDate dataInicial, LocalDate dataFinal) throws BusinessException;
     TimeDto obter(Long id) throws BusinessException;
     void excluir(Long id) throws BusinessException;
 }
