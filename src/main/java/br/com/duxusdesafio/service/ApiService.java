@@ -1,9 +1,11 @@
 package br.com.duxusdesafio.service;
 
 import br.com.duxusdesafio.business.exception.BusinessException;
+import br.com.duxusdesafio.business.exception.TecException;
 import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.business.model.Time;
 import br.com.duxusdesafio.business.validator.api.ApiValidator;
+import br.com.duxusdesafio.service.funcao.FuncaoServiceImpl;
 import br.com.duxusdesafio.service.integrante.IntegranteServiceImpl;
 import br.com.duxusdesafio.utils.CollectionUtils;
 import br.com.duxusdesafio.utils.DateUtils;
@@ -27,10 +29,12 @@ public class ApiService {
 
     private final ApiValidator apiValidator;
     private final IntegranteServiceImpl integranteService;
+    private final FuncaoServiceImpl funcaoService;
 
-    public ApiService(ApiValidator apiValidator, IntegranteServiceImpl integranteService) {
+    public ApiService(ApiValidator apiValidator, IntegranteServiceImpl integranteService, FuncaoServiceImpl funcaoService) {
         this.apiValidator = apiValidator;
         this.integranteService = integranteService;
+        this.funcaoService = funcaoService;
     }
 
     /**
@@ -81,8 +85,16 @@ public class ApiService {
      * Vai retornar a função mais comum nos times dentro do período
      */
     public String funcaoMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return null;
+        try {
+            DateUtils.validarDataNaoNula(dataInicial);
+            DateUtils.validarDataInicialAposDataFinal(dataInicial, dataFinal);
+            CollectionUtils.validarListaVazia(todosOsTimes);
+        } catch (BusinessException exception) {
+            LOGGER.error(ARGUMENTOS_INVALIDOS_NA_BUSCA_DE_INTEGRANTE_MAIS_USADO_NO_PERIODO, exception);
+            return null;
+        }
+
+        return funcaoService.obterfuncaoMaisComum(todosOsTimes, dataInicial, dataFinal);
     }
 
     /**
@@ -90,7 +102,7 @@ public class ApiService {
      */
     public String franquiaMaisFamosa(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
         // TODO Implementar método seguindo as instruções!
-        return null;
+        throw new TecException("Função ainda não implementada");
     }
 
 
@@ -99,7 +111,7 @@ public class ApiService {
      */
     public Map<String, Long> contagemPorFranquia(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
-        return null;
+        throw new TecException("Função ainda não implementada");
     }
 
     /**
@@ -107,7 +119,7 @@ public class ApiService {
      */
     public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
-        return null;
+        throw new TecException("Função ainda não implementada");
     }
 
 }

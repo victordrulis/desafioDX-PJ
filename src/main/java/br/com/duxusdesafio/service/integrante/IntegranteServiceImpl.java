@@ -6,6 +6,7 @@ import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.business.model.Time;
 import br.com.duxusdesafio.business.repository.integrante.IntegranteRepository;
 import br.com.duxusdesafio.business.validator.integrante.IntegranteValidatorImpl;
+import br.com.duxusdesafio.service.time.TimeServiceImpl;
 import br.com.duxusdesafio.utils.DateUtils;
 import br.com.duxusdesafio.view.integrante.IntegranteDto;
 import com.google.common.collect.Lists;
@@ -16,6 +17,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class IntegranteServiceImpl implements IntegranteService {
@@ -78,9 +80,7 @@ public class IntegranteServiceImpl implements IntegranteService {
      * Vai retornar o integrante que tiver presente na maior quantidade de times dentro do período
      */
     public Optional<Integrante> obterIntegranteComMaiorOcorrencia(List<Time> times, LocalDate dataInicial, LocalDate dataFinal) {
-
-        return times.stream()
-                .filter(predicatePeriodoTime(dataInicial, dataFinal))
+        return TimeServiceImpl.getTimeNoPeriodo(times, dataInicial, dataFinal)
                 .flatMap(time -> time.getComposicaoTimes().stream())
                 .filter(composicao -> composicao != null && composicao.getIntegrante() != null)
                 .collect(Collectors.groupingBy(composicao -> composicao.getIntegrante().getId(), Collectors.counting()))
@@ -107,8 +107,7 @@ public class IntegranteServiceImpl implements IntegranteService {
      * Extrair as listas de integrantes dos times e contar quantas vezes cada lista de integrantes se repete
      */
     Optional<Set<Integrante>> getComposicaoTimeMaisComum(List<Time> times, LocalDate dataInicial, LocalDate dataFinal) {
-        Map<Set<Integrante>, Long> composicoesRepetidas = times.stream()
-                .filter(predicatePeriodoTime(dataInicial, dataFinal))
+        Map<Set<Integrante>, Long> composicoesRepetidas = TimeServiceImpl.getTimeNoPeriodo(times, dataInicial, dataFinal)
                 .map(Time::getComposicaoTimes)
                 .map(composicaoTimeSet ->
                         composicaoTimeSet.stream()
@@ -125,7 +124,4 @@ public class IntegranteServiceImpl implements IntegranteService {
                 .map(Map.Entry::getKey);
     }
 
-    private Predicate<Time> predicatePeriodoTime(LocalDate dataInicial, LocalDate dataFinal) {
-        return time -> DateUtils.isDataNoPeriodo(time.getData(), dataInicial, dataFinal) && time.getComposicaoTimes() != null;
-    }
 }

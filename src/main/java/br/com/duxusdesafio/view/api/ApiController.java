@@ -7,6 +7,7 @@ import br.com.duxusdesafio.service.ApiService;
 import br.com.duxusdesafio.service.integrante.IntegranteServiceImpl;
 import br.com.duxusdesafio.service.time.TimeService;
 import br.com.duxusdesafio.view.api.service.ApiControllerServiceImpl;
+import br.com.duxusdesafio.view.funcao.FuncaoDto;
 import br.com.duxusdesafio.view.integrante.IntegranteDto;
 import br.com.duxusdesafio.view.time.TimeDto;
 import org.springframework.http.HttpStatus;
@@ -73,8 +74,11 @@ public class ApiController {
      */
     @GetMapping("/funcao-mais-comum")
     public ResponseEntity<?> funcaoMaisComum(@RequestParam(required = false) LocalDate dataInicial, @RequestParam(required = false) LocalDate dataFinal){
-        // TODO Implementar método seguindo as instruções!
-        return null;
+        List<Time> timesNoPeriodo = timeService.obterTodosNoPeriodo(dataInicial, dataFinal);
+        String funcaoEmTimesMaisComumNoPeriodo = apiService.funcaoMaisComum(dataInicial, dataFinal, timesNoPeriodo);
+        FuncaoDto funcao = FuncaoDto.builder().nome(funcaoEmTimesMaisComumNoPeriodo).build();
+
+        return apiControllerService.gerarResponse(funcao, HttpStatus.OK);
     }
 
     /**

@@ -2,6 +2,7 @@ package br.com.duxusdesafio.service;
 
 import br.com.duxusdesafio.business.exception.BusinessException;
 import br.com.duxusdesafio.business.model.ComposicaoTime;
+import br.com.duxusdesafio.business.model.Funcao;
 import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.business.model.Time;
 import com.google.common.collect.Lists;
@@ -22,8 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -40,12 +40,16 @@ public class ApiServiceTest {
     @Autowired
     private ApiService apiService;
 
+    private final LocalDate dataTime = LocalDate.of(2024, 3, 1);
+    private final LocalDate dataInicial = LocalDate.of(2024, 1, 1);
+    private final LocalDate dataFinal = LocalDate.of(2024, 12, 31);
+
     @Test
     public void timeDaData() {
         Times dadosOsTimes = getTimes();
         Time timeDaData = apiService.timeDaData(DATA_NOVEMBRO_2022, Lists.newArrayList(dadosOsTimes.time1, dadosOsTimes.time2, dadosOsTimes.time3));
 
-        Assert.assertNotNull(timeDaData);
+        assertNotNull(timeDaData);
         Assert.assertEquals(DATA_NOVEMBRO_2022, timeDaData.getData());
         Assert.assertEquals("meu time 2", timeDaData.getDescricao());
     }
@@ -82,7 +86,7 @@ public class ApiServiceTest {
 
         Integrante integranteMaisUsado = apiService.integranteMaisUsado(DATA_NOVEMBRO_2022, DATA_HOJE, Lists.newArrayList(dadosOsTimes.time1, dadosOsTimes.time2, dadosOsTimes.time3));
 
-        Assert.assertNotNull(integranteMaisUsado);
+        assertNotNull(integranteMaisUsado);
         Assert.assertEquals(dadosOsIntegrantes.integrante1, integranteMaisUsado);
     }
 
@@ -95,9 +99,6 @@ public class ApiServiceTest {
 
     @Test
     public void integrantesDoTimeMaisComumNoPeriodo() {
-        LocalDate dataInicial = LocalDate.of(2024, 1, 1);
-        LocalDate dataFinal = LocalDate.of(2024, 12, 31);
-
         Composioes dadasAsComposicoes = getComposioes();
         TimesSemArgumentos dadosOsTimes = getTimes(dadasAsComposicoes);
 
@@ -114,9 +115,6 @@ public class ApiServiceTest {
         Time time1 = mock(Time.class);
         Time time2 = mock(Time.class);
         Time time3 = mock(Time.class);
-
-        LocalDate dataInicial = LocalDate.of(2024, 1, 1);
-        LocalDate dataFinal = LocalDate.of(2024, 12, 31);
 
         // Mock do comportamento de composicaoTimes
         ComposicaoTime composicaoTime1 = criarComposicao(1L, "Faker");
@@ -143,6 +141,19 @@ public class ApiServiceTest {
 
     @Test
     public void funcaoMaisComum() {
+        Times dadosOsTimes = getTimes();
+        Integrantes dadosOsIntegrantes = getIntegrantes();
+        ComposicoesTime dadasAsComposicoes = getComposicoesTime(dadosOsTimes, dadosOsIntegrantes);
+
+        dadosOsTimes.time1.setComposicaoTimes(Sets.newHashSet(dadasAsComposicoes.composicaoTime1, dadasAsComposicoes.composicaoTime3));
+        dadosOsTimes.time2.setComposicaoTimes(Sets.newHashSet(dadasAsComposicoes.composicaoTime2));
+
+        List<Time> todosOsTimes = Arrays.asList(dadosOsTimes.time1, dadosOsTimes.time2, dadosOsTimes.time3);
+
+        String funcaoMaisComum = apiService.funcaoMaisComum(dataInicial, dataFinal, todosOsTimes);
+
+        assertNotNull(funcaoMaisComum);
+        assertEquals("Off-lane", funcaoMaisComum);
     }
 
     @Test
@@ -178,8 +189,11 @@ public class ApiServiceTest {
     }
 
     private Integrantes getIntegrantes() {
-        Integrante integrante1 = Integrante.builder().id(1L).nome("integrante 1").build();
-        Integrante integrante2 = Integrante.builder().id(2L).nome("integrante 2").build();
+        Funcao funcao1 = Funcao.builder().id(1L).nome("Off-lane").build();
+        Funcao funcao2 = Funcao.builder().id(2L).nome("HC").build();
+
+        Integrante integrante1 = Integrante.builder().id(1L).nome("integrante 1").funcao(funcao1).build();
+        Integrante integrante2 = Integrante.builder().id(2L).nome("integrante 2").funcao(funcao2).build();
 
         return new Integrantes(integrante1, integrante2);
     }

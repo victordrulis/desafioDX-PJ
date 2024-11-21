@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class TimeServiceImpl implements TimeService {
@@ -75,5 +77,14 @@ public class TimeServiceImpl implements TimeService {
 
     private Optional<Time> getTime(Long id) {
         return repository.findById(id);
+    }
+
+    public static Stream<Time> getTimeNoPeriodo(List<Time> times, LocalDate dataInicial, LocalDate dataFinal) {
+        return times.stream()
+                .filter(predicatePeriodoTime(dataInicial, dataFinal));
+    }
+
+    private static Predicate<Time> predicatePeriodoTime(LocalDate dataInicial, LocalDate dataFinal) {
+        return time -> DateUtils.isDataNoPeriodo(time.getData(), dataInicial, dataFinal) && time.getComposicaoTimes() != null;
     }
 }
