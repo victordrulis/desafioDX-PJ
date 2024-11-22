@@ -1,0 +1,111 @@
+# Para testar as URIs, utilizar a extensão do vscode abaixo:
+
+# Name: REST Client
+# Id: humao.rest-client
+# Description: REST Client for Visual Studio Code
+# Version: 0.25.1
+# Publisher: Huachao Mao
+# VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+# TIME ----------------
+###
+GET http://localhost:8080/escalacao/api/time/1
+Accept: application/json
+Content-Type:application/json
+###
+GET http://localhost:8080/escalacao/api/time/listar
+Accept: application/json
+Content-Type:application/json
+
+###
+POST http://localhost:8080/escalacao/api/time/salvar
+Accept: application/json
+Content-Type:application/json
+
+{
+    "descricao": "time salvar",
+    "data": [
+      2024,
+      11,
+      20
+    ],
+    "franquia": null,
+    "composicaoTime": []
+}
+
+###
+DELETE http://localhost:8080/escalacao/api/time/1
+Accept: application/json
+Content-Type:application/json
+
+
+# FRANQUIA ------------
+###
+GET http://localhost:8080/escalacao/api/franquia/1
+Accept: application/json
+Content-Type:application/json
+###
+GET http://localhost:8080/escalacao/api/franquia/listar
+Accept: application/json
+Content-Type:application/json
+###
+POST http://localhost:8080/escalacao/api/franquia/salvar
+Accept: application/json
+Content-Type:application/json
+
+{
+    "nome": "franquia resus"
+}
+
+###
+DELETE http://localhost:8080/escalacao/api/franquia/1
+Accept: application/json
+Content-Type:application/json
+
+# FUNCAO ------------
+###
+GET http://localhost:8080/escalacao/api/funcao/1
+Accept: application/json
+Content-Type:application/json
+###
+GET http://localhost:8080/escalacao/api/funcao/listar
+Accept: application/json
+Content-Type:application/json
+###
+POST http://localhost:8080/escalacao/api/funcao/salvar
+Accept: application/json
+Content-Type:application/json
+
+{
+    "nome": "funcao request"
+}
+
+###
+DELETE http://localhost:8080/escalacao/api/funcao/1
+Accept: application/json
+Content-Type:application/json
+
+# INTEGRANTE ----------
+###
+GET http://localhost:8080/escalacao/api/integrante/1
+Accept: application/json
+Content-Type:application/json
+###
+GET http://localhost:8080/escalacao/api/integrante/listar
+Accept: application/json
+Content-Type:application/json
+###
+POST http://localhost:8080/escalacao/api/integrante/salvar
+Accept: application/json
+Content-Type:application/json
+
+{
+    "nome": "integrante request",
+    "funcao_id": 1,
+    "franquia_id": 1
+}
+
+###
+DELETE http://localhost:8080/escalacao/api/integrante/1
+Accept: application/json
+Content-Type:application/json

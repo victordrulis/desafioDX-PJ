@@ -1,0 +1,97 @@
+# Para testar as URIs, utilizar a extensão do vscode abaixo:
+
+# Name: REST Client
+# Id: humao.rest-client
+# Description: REST Client for Visual Studio Code
+# Version: 0.25.1
+# Publisher: Huachao Mao
+# VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+# ApiService ------------------------------------------
+###
+GET http://localhost:8080/escalacao/api
+Accept: application/json
+Content-Type:application/json
+###
+
+# TimeDaData ------------------------------------------------
+GET http://localhost:8080/escalacao/api/time-da-data?data=20-11-2024
+Accept: application/json
+Content-Type:application/json
+
+# IntegranteMaisUsado ---------------------------------------
+###
+GET http://localhost:8080/escalacao/api/integrante-mais-usado?dataInicial=01-11-2022&dataFinal=20-11-2024
+Accept: application/json
+Content-Type:application/json
+
+{
+
+}
+
+###
+GET http://localhost:8080/escalacao/api/integrante-mais-usado?dataInicial=01-11-2022
+Accept: application/json
+Content-Type:application/json
+
+{
+
+}
+###
+GET http://localhost:8080/escalacao/api/integrante-mais-usado?dataInicial=01-11-2022&dataFinal=20-11-2024
+Accept: application/json
+Content-Type:application/json
+
+{
+
+}
+
+# IntegrantesDoTimeMaisComum -----------------------------------
+###
+GET http://localhost:8080/escalacao/api/integrante-do-time-mais-comum?dataInicial=01-11-2022&dataFinal=20-11-2024
+Accept: application/json
+Content-Type:application/json
+
+{
+
+}
+
+# FuncaoMaisComum -----------------------------------
+###
+GET http://localhost:8080/escalacao/api/funcao-mais-comum?dataInicial=01-11-2022&dataFinal=20-11-2024
+Accept: application/json
+Content-Type:application/json
+
+{
+
+}
+
+# FranquiaMaisFamosa -----------------------------------
+###
+GET http://localhost:8080/escalacao/api/franquia-mais-famosa?dataInicial=01-11-2022&dataFinal=20-11-2024
+Accept: application/json
+Content-Type:application/json
+
+{
+
+}
+
+# ContagemPorFranquia -----------------------------------
+###
+GET http://localhost:8080/escalacao/api/contagem-por-franquia?dataInicial=01-11-2022&dataFinal=20-11-2024
+Accept: application/json
+Content-Type:application/json
+
+{
+
+}
+
+# ContagemPorFuncao -----------------------------------
+###
+GET http://localhost:8080/escalacao/api/contagem-por-funcao?dataInicial=01-11-2022&dataFinal=20-11-2024
+Accept: application/json
+Content-Type:application/json
+
+{
+
+}

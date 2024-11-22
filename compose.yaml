@@ -1,0 +1,11 @@
+services:
+  mysql:
+    container_name: 'teste-duxus'
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=testeduxus'
+      - 'MYSQL_PASSWORD=duxus'
+      - 'MYSQL_ROOT_PASSWORD=duxus123'
+      - 'MYSQL_USER=duxus'
+    ports:
+      - '3306:3306'
