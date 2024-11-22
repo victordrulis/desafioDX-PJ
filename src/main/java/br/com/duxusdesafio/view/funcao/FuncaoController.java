@@ -30,7 +30,7 @@ public class FuncaoController {
         return funcaoControllerService.salvar(funcaoDto);
     }
 
-    @DeleteMapping("/excluir/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> excluir(@PathVariable Long id) throws BusinessException {
         return funcaoControllerService.excluir(id);
     }

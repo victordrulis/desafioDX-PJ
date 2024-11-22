@@ -33,6 +33,11 @@ Content-Type:application/json
     "composicaoTime": []
 }
 
+###
+DELETE http://localhost:8080/escalacao/api/time/1
+Accept: application/json
+Content-Type:application/json
+
 
 # FRANQUIA ------------
 ###
@@ -49,8 +54,13 @@ Accept: application/json
 Content-Type:application/json
 
 {
-    "nome": "franquia request"
+    "nome": "franquia resus"
 }
+
+###
+DELETE http://localhost:8080/escalacao/api/franquia/1
+Accept: application/json
+Content-Type:application/json
 
 # FUNCAO ------------
 ###
@@ -69,6 +79,11 @@ Content-Type:application/json
 {
     "nome": "funcao request"
 }
+
+###
+DELETE http://localhost:8080/escalacao/api/funcao/1
+Accept: application/json
+Content-Type:application/json
 
 # INTEGRANTE ----------
 ###
@@ -89,3 +104,8 @@ Content-Type:application/json
     "funcao_id": 1,
     "franquia_id": 1
 }
+
+###
+DELETE http://localhost:8080/escalacao/api/integrante/1
+Accept: application/json
+Content-Type:application/json

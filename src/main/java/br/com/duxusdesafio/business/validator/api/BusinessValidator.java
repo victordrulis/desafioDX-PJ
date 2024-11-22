@@ -20,4 +20,10 @@ public abstract class BusinessValidator {
     public static void validarObjetoExiste(Object object) {
         validarNulo(object, OBJETO_NAO_EXISTE);
     }
+
+    protected static void isNotInstancia(Class<?> targetClass, Object object) {
+        if(!targetClass.isInstance(object)) {
+            throw new BusinessException(String.format("%s não pode ser validado como %s", object.getClass().getSimpleName(), targetClass.getSimpleName()));
+        }
+    }
 }

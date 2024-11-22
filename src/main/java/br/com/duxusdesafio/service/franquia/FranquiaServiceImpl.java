@@ -1,12 +1,20 @@
 package br.com.duxusdesafio.service.franquia;
 
 import br.com.duxusdesafio.business.exception.BusinessException;
-import br.com.duxusdesafio.business.model.*;
+import br.com.duxusdesafio.business.model.ComposicaoTime;
+import br.com.duxusdesafio.business.model.Franquia;
+import br.com.duxusdesafio.business.model.Integrante;
+import br.com.duxusdesafio.business.model.Time;
 import br.com.duxusdesafio.business.repository.franquia.FranquiaRepository;
-import br.com.duxusdesafio.business.validator.franquia.FranquiaValidatorImpl;
+import br.com.duxusdesafio.business.validator.api.ApiValidator;
+import br.com.duxusdesafio.business.validator.api.ValidadorStrategy;
+import br.com.duxusdesafio.business.validator.franquia.FranquiaSalvarValidatorImpl;
 import br.com.duxusdesafio.service.time.TimeServiceImpl;
+import br.com.duxusdesafio.utils.AcoesEnum;
 import br.com.duxusdesafio.view.franquia.FranquiaDto;
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,10 +27,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class FranquiaServiceImpl implements FranquiaService {
-    private final FranquiaRepository repository;
-    private final FranquiaValidatorImpl franquiaValidator;
+    private final Logger logger = LoggerFactory.getLogger(ApiValidator.class);
 
-    public FranquiaServiceImpl(FranquiaRepository repository, FranquiaValidatorImpl franquiaValidator) {
+    private final ValidadorStrategy validadorStratey;
+    private final FranquiaRepository repository;
+    private final FranquiaSalvarValidatorImpl franquiaValidator;
+
+    public FranquiaServiceImpl(ValidadorStrategy validadorStratey, FranquiaRepository repository, FranquiaSalvarValidatorImpl franquiaValidator) {
+        this.validadorStratey = validadorStratey;
         this.repository = repository;
         this.franquiaValidator = franquiaValidator;
     }
@@ -50,11 +62,19 @@ public class FranquiaServiceImpl implements FranquiaService {
 
     @Override
     public void excluir(Long id) throws BusinessException {
-        franquiaValidator.validarNulo(id);
         Franquia franquia = getFranquia(id).orElse(null);
-        franquiaValidator.validarObjetoExiste(franquia);
 
-        repository.delete(franquia);
+        try {
+            validadorStratey.getValidadores(Franquia.class)
+                    .get(AcoesEnum.EXCLUIR)
+                    .validar(franquia);
+
+            repository.delete(franquia);
+
+        } catch (BusinessException e) {
+            logger.error("Erro ao validar", e);
+            throw e;
+        }
     }
 
     private Optional<Franquia> getFranquia(Long id) {

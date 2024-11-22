@@ -6,7 +6,7 @@ import br.com.duxusdesafio.business.model.Funcao;
 import br.com.duxusdesafio.business.model.Integrante;
 import br.com.duxusdesafio.business.model.Time;
 import br.com.duxusdesafio.business.repository.funcao.FuncaoRepository;
-import br.com.duxusdesafio.business.validator.funcao.FuncaoValidatorImpl;
+import br.com.duxusdesafio.business.validator.funcao.FuncaoSalvarValidatorImpl;
 import br.com.duxusdesafio.service.time.TimeServiceImpl;
 import br.com.duxusdesafio.view.funcao.FuncaoDto;
 import com.google.common.collect.Lists;
@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 @Service
 public class FuncaoServiceImpl implements FuncaoService {
     private final FuncaoRepository repository;
-    private final FuncaoValidatorImpl funcaoValidator;
+    private final FuncaoSalvarValidatorImpl funcaoValidator;
 
-    public FuncaoServiceImpl(FuncaoRepository repository, FuncaoValidatorImpl funcaoValidator) {
+    public FuncaoServiceImpl(FuncaoRepository repository, FuncaoSalvarValidatorImpl funcaoValidator) {
         this.repository = repository;
         this.funcaoValidator = funcaoValidator;
     }

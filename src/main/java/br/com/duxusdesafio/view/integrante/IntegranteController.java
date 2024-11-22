@@ -30,7 +30,7 @@ public class IntegranteController {
         return integranteControllerService.salvar(integranteDto);
     }
 
-    @DeleteMapping("/excluir/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> excluir(@PathVariable Long id) throws BusinessException {
         return integranteControllerService.excluir(id);
     }

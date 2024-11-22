@@ -22,7 +22,7 @@ public class Time {
     @Column(nullable = false)
     private LocalDate data;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "time", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "time", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
