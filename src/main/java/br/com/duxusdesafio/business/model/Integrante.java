@@ -13,7 +13,7 @@ import java.util.Set;
 @Builder
 public class Integrante {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "integrante_id")
     private Long id;
 

@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Builder
 public class ComposicaoTime {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

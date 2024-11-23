@@ -18,7 +18,7 @@ import javax.persistence.Id;
 public class Franquia {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     private String nome;
